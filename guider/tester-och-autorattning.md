@@ -70,7 +70,9 @@ nästan alltid gröna på GitHub också.
         ├── 1. Hämtar din kod
         ├── 2. Installerar .NET
         ├── 3. Bygger allt och kör alla tester
-        └── 4. Gör en tabell med resultatet
+        ├── 4. Gör en tabell med resultatet
+        ├── 5. Granskar kodstilen och ger tips
+        └── 6. Uppdaterar din dashboard
         │
         ▼
   ✅ eller ❌ visas vid din commit
@@ -97,6 +99,33 @@ så länge du inte är klar med alla övningar. Titta i tabellen för att se
 Står det *"Koden gick inte att kompilera"* finns det ett kompileringsfel
 någonstans. Då kan inga tester köras alls. Bygg i Visual Studio och kolla
 **Error List**.
+
+---
+
+## Din dashboard
+
+Efter varje push bygger GitHub Actions en personlig sida åt dig:
+**Min progression**. Den ligger på en egen gren som heter `dashboard` i din
+fork. Länken finns överst i README-filen.
+
+Där ser du:
+- **Förloppsstaplar** för varje övning, och totalt
+- **Nästa steg**: det första testet som inte är grönt än, med en förklaring
+- **Utveckling**: hur många tester du hade godkända vid de senaste pusharna
+- **Kodstil**: hur många tips du fick
+- **Alla tester**, övning för övning
+
+Grenen `dashboard` skrivs bara av GitHub Actions. Du behöver aldrig hämta
+den eller ändra i den, och den kan aldrig ge konflikter med din kod.
+
+---
+
+## Tips om kodstil
+
+Samtidigt som testerna körs granskas din kod mot kursens
+[kodstandard](kodstandard.md). Tipsen syns i sammanfattningen under
+**💡 Tips om kodstil**, som små notiser i koden på GitHub, och på din
+dashboard. **Tipsen påverkar aldrig rättningen.**
 
 ---
 

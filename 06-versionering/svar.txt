@@ -1,0 +1,15 @@
+Svar på frågorna i Del A (se README.md i den här mappen).
+
+Skriv bokstaven för ditt svar efter kolonet, till exempel:   Fråga 1: B
+Spara filen, committa och pusha. Testerna läser den här filen.
+
+Fråga 1:
+Fråga 2:
+Fråga 3:
+Fråga 4:
+Fråga 5:
+Fråga 6:
+Fråga 7:
+Fråga 8:
+Fråga 9:
+Fråga 10:

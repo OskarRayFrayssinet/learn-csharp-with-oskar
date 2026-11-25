@@ -1,0 +1,5 @@
+# Klassrummet (Del B i övning 05)
+# Skriv dina svar efter kolonet. Ändra inte texten före kolonet.
+Namn:
+Favoritfrukt:
+Det bästa med programmering:

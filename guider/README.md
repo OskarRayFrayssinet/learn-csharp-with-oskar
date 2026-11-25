@@ -28,6 +28,14 @@ både under övningarna och när du arbetar på egen hand.
 |---|---|---|---|
 | 10 | [Filstrukturen i C#](filstruktur.md) | Solution, projekt, kodfiler, program eller bibliotek | 03 |
 | 11 | [Recept: skapa projekt](skapa-projekt.md) | Skapa eget bibliotek och program, vanliga fel | 03 och egna projekt |
+| 12 | [Kodstandard och automatiska tips](kodstandard.md) | Namn, klamrar, formatering, hur du läser och fixar tipsen | Alla övningar |
+
+## Samarbete och versioner
+
+| Nr | Guide | Handlar om | Används i |
+|---|---|---|---|
+| 13 | [Merge-konflikter](merge-konflikter.md) | Varför konflikter uppstår, markeringarna, lösa i fem steg, avbryta | 05 |
+| 14 | [Versionering](versionering.md) | SemVer, vad som bryter ett API, ändringslogg, git-taggar | 06 |
 
 ## "Prova själv"
 

@@ -5,6 +5,10 @@ och får direkt veta vilka tester som är godkända.
 
 ## Börja här
 
+> 📊 **Din dashboard:** [Min progression](../../tree/dashboard). Den uppdateras varje gång du pushar
+> och visar hur långt du har kommit, vad du ska göra härnäst och tips om din kod.
+> (Länken fungerar i din fork när du har pushat minst en gång.)
+
 1. **Läs [Så jobbar du i kursen](guider/sa-jobbar-du.md).** Den förklarar
    hur allt hänger ihop och vad du gör varje lektion.
 2. **Gör [Kom igång](#kom-igång-görs-en-gång)** längre ner på den här sidan (en gång).
@@ -13,9 +17,9 @@ och får direkt veta vilka tester som är godkända.
 Så här ser varje lektion ut:
 
 ```
- Hämta nytt  →  Läs  →  Skriv kod  →  Provkör  →  Testa  →  Commit  →  Push  →  Kolla Actions
- från läraren   uppgift              (▶)        (Test     (spara)    (skicka)   (rättning)
-                + guide                          Explorer)
+ Hämta nytt  →  Läs  →  Skriv kod  →  Provkör  →  Testa  →  Commit  →  Push  →  Kolla dashboard
+ från läraren   uppgift              (▶)        (Test     (spara)    (skicka)   (rättning
+                + guide                          Explorer)                       och tips)
 ```
 
 ## Övningar
@@ -26,6 +30,8 @@ Så här ser varje lektion ut:
 | 02 | [Sortera en lista](02-sortera-lista) | [Villkor och loopar](guider/villkor-och-loopar.md), [Testkör](guider/testkora.md) |
 | 03 | [Filstrukturen i C#](03-filstruktur) | [Filstrukturen](guider/filstruktur.md), [Recept: skapa projekt](guider/skapa-projekt.md) |
 | 04 | [Träning – 40 små uppgifter](04-traning) | [Variabler](guider/variabler-och-datatyper.md), [Villkor och loopar](guider/villkor-och-loopar.md) |
+| 05 | [Merge-konflikter](05-konflikter) | [Merge-konflikter](guider/merge-konflikter.md), [Git och GitHub](guider/git-och-github.md) |
+| 06 | [Versionering](06-versionering) | [Versionering](guider/versionering.md) |
 
 ## Guider
 
@@ -44,6 +50,9 @@ Alla guider finns i **[guider/](guider/README.md)**. Läs de fem första innan d
 | [Testkör din kod själv](guider/testkora.md) | Provkör, debuggern, läsa testfel |
 | [Filstrukturen i C#](guider/filstruktur.md) | Solution, projekt, program eller bibliotek |
 | [Recept: skapa projekt](guider/skapa-projekt.md) | Bygga eget program och bibliotek |
+| [Kodstandard och automatiska tips](guider/kodstandard.md) | Namn, klamrar, formatering och tipsen du får |
+| [Merge-konflikter](guider/merge-konflikter.md) | Varför konflikter uppstår och hur du löser dem |
+| [Versionering](guider/versionering.md) | MAJOR.MINOR.PATCH, ändringslogg och taggar |
 
 ---
 

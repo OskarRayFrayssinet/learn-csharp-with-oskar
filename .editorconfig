@@ -1,0 +1,69 @@
+# =========================================================================
+#  Kodstandard för kursen
+#  Visual Studio och VS Code läser den här filen automatiskt och visar
+#  tips (gröna/gula vågstreck) när koden inte följer standarden.
+#  Läs mer: guider/kodstandard.md
+# =========================================================================
+
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{csproj,props,targets,xml,yml,yaml,json}]
+indent_size = 2
+
+[*.cs]
+indent_size = 4
+
+# --- Formatering: indrag, mellanslag och radbrytningar (IDE0055) ---------
+dotnet_diagnostic.IDE0055.severity = warning
+csharp_new_line_before_open_brace = all
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_around_binary_operators = before_and_after
+
+# --- Klamrar runt if, for, while och else (IDE0011) ----------------------
+csharp_prefer_braces = true:warning
+dotnet_diagnostic.IDE0011.severity = warning
+
+# --- Onödig kod ----------------------------------------------------------
+# Ett värde sparas i en variabel men används aldrig (IDE0059)
+dotnet_diagnostic.IDE0059.severity = warning
+# En privat metod eller variabel används aldrig (IDE0051, IDE0052)
+dotnet_diagnostic.IDE0051.severity = warning
+dotnet_diagnostic.IDE0052.severity = warning
+# Oanvända parametrar: av, eftersom uppgifterna börjar med tomma metoder
+dotnet_diagnostic.IDE0060.severity = none
+
+# --- Namngivning (IDE1006) -----------------------------------------------
+dotnet_diagnostic.IDE1006.severity = warning
+# Klasser, metoder och egenskaper: PascalCase  (t.ex. SorteraStigande)
+dotnet_naming_symbols.typer_och_metoder.applicable_kinds = class, struct, interface, enum, method, local_function, property, event, delegate
+dotnet_naming_symbols.typer_och_metoder.applicable_accessibilities = *
+dotnet_naming_style.pascal.capitalization = pascal_case
+dotnet_naming_rule.typer_och_metoder_ska_vara_pascal.symbols = typer_och_metoder
+dotnet_naming_rule.typer_och_metoder_ska_vara_pascal.style = pascal
+dotnet_naming_rule.typer_och_metoder_ska_vara_pascal.severity = warning
+
+# Konstanter: PascalCase  (t.ex. MaxAntal)
+dotnet_naming_symbols.konstanter.applicable_kinds = field, local
+dotnet_naming_symbols.konstanter.required_modifiers = const
+dotnet_naming_rule.konstanter_ska_vara_pascal.symbols = konstanter
+dotnet_naming_rule.konstanter_ska_vara_pascal.style = pascal
+dotnet_naming_rule.konstanter_ska_vara_pascal.severity = warning
+
+# Lokala variabler och parametrar: camelCase  (t.ex. antalElever)
+dotnet_naming_symbols.lokala.applicable_kinds = local, parameter
+dotnet_naming_style.camel.capitalization = camel_case
+dotnet_naming_rule.lokala_ska_vara_camel.symbols = lokala
+dotnet_naming_rule.lokala_ska_vara_camel.style = camel
+dotnet_naming_rule.lokala_ska_vara_camel.severity = warning
+
+# --- Testfiler: lärarens kod, inga tips ----------------------------------
+[*Tests.cs]
+dotnet_analyzer_diagnostic.severity = none

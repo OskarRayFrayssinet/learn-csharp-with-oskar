@@ -1,0 +1,11 @@
+<Project>
+  <!--
+    Gäller alla projekt i repot.
+    EnforceCodeStyleInBuild gör att reglerna i .editorconfig också syns när
+    man bygger, i Error List i Visual Studio och i GitHub Actions.
+    Reglerna ger bara varningar (tips). De stoppar aldrig bygget.
+  -->
+  <PropertyGroup Condition="!$(MSBuildProjectName.EndsWith('.Tests'))">
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+</Project>

@@ -6,3 +6,5 @@ TestResults/
 .vscode/
 .idea/
 *.user
+05-konflikter/labb/
+__pycache__/
