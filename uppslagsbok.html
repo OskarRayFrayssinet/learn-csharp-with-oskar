@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Min progression – Lär dig C# med Oskar</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --kort: #ffffff; --text: #1d2330; --svag: #5b6475; --linje: #e2e6ec;
+    --accent: #3559d6; --accent-ljus: #e8edfc; --ok: #1f8a4c; --ok-ljus: #e3f4ea;
+    --fel: #c23b3b; --fel-ljus: #fbe9e9; --varn: #a86a00; --varn-ljus: #fdf2dc;
+    --kod: #f0f2f6; --skugga: 0 1px 2px rgba(20,30,50,.06), 0 2px 8px rgba(20,30,50,.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12151b; --kort: #1b1f27; --text: #e6e9ef; --svag: #9aa3b2; --linje: #2b313c;
+      --accent: #7f9cff; --accent-ljus: #232c48; --ok: #4cc27f; --ok-ljus: #17301f;
+      --fel: #ef7a7a; --fel-ljus: #3a1c1c; --varn: #e6b04a; --varn-ljus: #352a13;
+      --kod: #222833; --skugga: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.5 "Segoe UI", system-ui, -apple-system, Roboto, sans-serif; }
+  header { background: var(--kort); border-bottom: 1px solid var(--linje); }
+  .inre { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+  .topp { display: flex; align-items: center; gap: 24px; padding: 22px 0 14px; flex-wrap: wrap; }
+  h1 { font-size: 22px; margin: 0; letter-spacing: -.01em; }
+  .under { color: var(--svag); font-size: 13px; margin-top: 2px; }
+  .totalt { margin-left: auto; text-align: right; }
+  .totalt .tal { font-size: 28px; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .totalt .tal small { font-size: 14px; color: var(--svag); font-weight: 400; }
+  nav { display: flex; gap: 4px; }
+  nav button { background: none; border: 0; border-bottom: 2px solid transparent; color: var(--svag);
+               padding: 10px 14px; font: inherit; cursor: pointer; }
+  nav button:hover { color: var(--text); }
+  nav button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+  main { padding: 24px 0 60px; }
+  section[hidden] { display: none; }
+  h2 { font-size: 16px; margin: 28px 0 12px; }
+  h2:first-child { margin-top: 0; }
+  .kort { background: var(--kort); border: 1px solid var(--linje); border-radius: 10px; box-shadow: var(--skugga); }
+  .rutnat { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+  .ovning { padding: 14px 16px; }
+  .ovning .rad { display: flex; align-items: baseline; gap: 8px; }
+  .ovning .nr { font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .ovning .namn { font-weight: 600; flex: 1; }
+  .ovning .antal { color: var(--svag); font-variant-numeric: tabular-nums; font-size: 13px; }
+  .stapel { height: 8px; background: var(--linje); border-radius: 99px; overflow: hidden; margin-top: 10px; }
+  .stapel > div { height: 100%; background: var(--accent); border-radius: 99px; }
+  .stapel.klar > div { background: var(--ok); }
+  .nasta { padding: 16px 18px; border-left: 4px solid var(--accent); }
+  .nasta .rubrik { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--svag); }
+  .nasta .test { font-weight: 600; font-size: 16px; margin: 4px 0; }
+  .nasta .medd { color: var(--svag); }
+  .larm { padding: 14px 18px; border-left: 4px solid var(--fel); background: var(--fel-ljus); }
+  .larm pre { white-space: pre-wrap; margin: 8px 0 0; }
+  .historik { padding: 16px 18px; }
+  .historik svg { width: 100%; height: 90px; display: block; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--linje); vertical-align: top; }
+  th { color: var(--svag); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  tr:last-child td { border-bottom: 0; }
+  td.tal { font-variant-numeric: tabular-nums; }
+  code, pre { font-family: "Cascadia Code", Consolas, "SF Mono", Menlo, monospace; font-size: 13px; }
+  details.grupp { margin-bottom: 8px; }
+  details.grupp summary { padding: 12px 16px; cursor: pointer; font-weight: 600; list-style: none; display: flex; gap: 10px; }
+  details.grupp summary::-webkit-details-marker { display: none; }
+  details.grupp summary::before { content: "▸"; color: var(--svag); }
+  details.grupp[open] summary::before { content: "▾"; }
+  details.grupp summary .antal { margin-left: auto; color: var(--svag); font-weight: 400; }
+  .ikon-ok { color: var(--ok); } .ikon-fel { color: var(--fel); }
+  .filter { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; color: var(--svag); font-size: 14px; }
+  /* Uppslagsbok */
+  .sokruta { display: flex; gap: 10px; align-items: center; padding: 6px 6px 6px 14px; }
+  .sokruta input { flex: 1; border: 0; outline: 0; background: transparent; color: var(--text);
+                   font: inherit; font-size: 17px; padding: 10px 0; }
+  .sokruta kbd { font-size: 12px; color: var(--svag); border: 1px solid var(--linje); border-radius: 4px; padding: 1px 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 6px; }
+  .chip { border: 1px solid var(--linje); background: var(--kort); color: var(--text); border-radius: 99px;
+          padding: 4px 12px; font: inherit; font-size: 13px; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .traffar { color: var(--svag); font-size: 13px; margin: 8px 0 12px; }
+  .post { padding: 14px 16px; margin-bottom: 10px; }
+  .post h3 { margin: 0; font-size: 16px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .post h3 code { font-size: 15px; font-weight: 650; }
+  .kat { font-size: 11px; font-weight: 600; color: var(--accent); background: var(--accent-ljus);
+         border-radius: 99px; padding: 2px 8px; }
+  .post p { margin: 6px 0 0; }
+  .post pre { background: var(--kod); border-radius: 6px; padding: 10px 12px; margin: 10px 0 0; overflow-x: auto; }
+  .post a { font-size: 13px; color: var(--accent); }
+  mark { background: var(--varn-ljus); color: inherit; border-radius: 2px; }
+  .tomt { color: var(--svag); padding: 30px; text-align: center; }
+  footer { color: var(--svag); font-size: 12px; text-align: center; padding: 20px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="inre">
+    <div class="topp">
+      <div>
+        <h1 id="titel">Min progression</h1>
+        <div class="under" id="undertitel"></div>
+      </div>
+      <div class="totalt" id="totalt"></div>
+    </div>
+    <nav role="tablist" id="flikar"></nav>
+  </div>
+</header>
+
+<main class="inre">
+  <section id="flik-oversikt"></section>
+  <section id="flik-tester" hidden></section>
+  <section id="flik-tips" hidden></section>
+  <section id="flik-uppslag" hidden>
+    <div class="kort sokruta">
+      <span aria-hidden="true">🔎</span>
+      <input id="sok" type="search" placeholder="Sök: for, modulo, git revert, CS0103, avrunda …" autocomplete="off" aria-label="Sök i uppslagsboken">
+      <kbd>/</kbd>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="traffar" id="traffar"></div>
+    <div id="resultat"></div>
+  </section>
+</main>
+<footer id="fot"></footer>
+
+<script id="data" type="application/json">{"uppslag":{"kategorier":["Nyckelord","Datatyper","Operatorer","Text","Arrayer och listor","Metoder","Begrepp","Felmeddelanden","Git","dotnet","Visual Studio"],"poster":[{"namn":"if / else if / else","kategori":"Nyckelord","forklaring":"K\u00F6r kod bara om ett villkor \u00E4r sant. Villkoren testas uppifr\u00E5n och ned, och bara det f\u00F6rsta som st\u00E4mmer k\u00F6rs.","exempel":"if (poang \u003E= 90)\n{\n    betyg = \u0022A\u0022;\n}\nelse if (poang \u003E= 50)\n{\n    betyg = \u0022E\u0022;\n}\nelse\n{\n    betyg = \u0022F\u0022;\n}","ord":"villkor om annars","guide":"guider/villkor-och-loopar.md#villkor-if-else-if-else"},{"namn":"switch","kategori":"Nyckelord","forklaring":"V\u00E4ljer bland m\u00E5nga fasta v\u00E4rden. Ofta tydligare \u00E4n m\u00E5nga else if.","exempel":"switch (dag)\n{\n    case 1:\n        return \u0022m\u00E5ndag\u0022;\n    case 2:\n        return \u0022tisdag\u0022;\n    default:\n        return \u0022ogiltig\u0022;\n}","ord":"case default v\u00E4lja","guide":"guider/villkor-och-loopar.md#switch-v\u00E4lja-bland-m\u00E5nga-fasta-v\u00E4rden"},{"namn":"for","kategori":"Nyckelord","forklaring":"Loop n\u00E4r du vet hur m\u00E5nga varv det ska bli. Har start, villkor och steg.","exempel":"for (int i = 1; i \u003C= 5; i\u002B\u002B)\n{\n    Console.WriteLine(i);   // 1 2 3 4 5\n}","ord":"loop slinga upprepa r\u00E4knare","guide":"guider/villkor-och-loopar.md#for-n\u00E4r-du-vet-hur-m\u00E5nga-varv"},{"namn":"foreach","kategori":"Nyckelord","forklaring":"G\u00E5r igenom varje sak i en array, lista eller str\u00E4ng.","exempel":"foreach (int tal in minaTal)\n{\n    summa \u002B= tal;\n}","ord":"loop g\u00E5 igenom varje","guide":"guider/villkor-och-loopar.md#foreach-g\u00E5-igenom-alla-saker-i-en-array-eller-lista"},{"namn":"while","kategori":"Nyckelord","forklaring":"Loop som forts\u00E4tter s\u00E5 l\u00E4nge villkoret \u00E4r sant. Bra n\u00E4r du inte vet antalet varv i f\u00F6rv\u00E4g.","exempel":"while (tal \u003E 0)\n{\n    tal = tal / 10;\n    antal\u002B\u002B;\n}","ord":"loop medan","guide":"guider/villkor-och-loopar.md#while-n\u00E4r-du-inte-vet-hur-m\u00E5nga-varv"},{"namn":"do while","kategori":"Nyckelord","forklaring":"Som while, men kroppen k\u00F6rs alltid minst en g\u00E5ng eftersom villkoret testas sist.","exempel":"do\n{\n    svar = Console.ReadLine();\n}\nwhile (svar != \u0022ja\u0022);","ord":"loop minst en g\u00E5ng","guide":""},{"namn":"break","kategori":"Nyckelord","forklaring":"Hoppar ut ur loopen (eller switch) direkt.","exempel":"foreach (int t in tal)\n{\n    if (t == sokt)\n    {\n        break;\n    }\n}","ord":"avbryta loop sluta","guide":""},{"namn":"continue","kategori":"Nyckelord","forklaring":"Hoppar \u00F6ver resten av varvet och g\u00E5r till n\u00E4sta varv i loopen.","exempel":"for (int i = 1; i \u003C= 10; i\u002B\u002B)\n{\n    if (i % 2 == 0)\n    {\n        continue;   // hoppa \u00F6ver j\u00E4mna tal\n    }\n    Console.WriteLine(i);\n}","ord":"hoppa \u00F6ver n\u00E4sta varv","guide":""},{"namn":"return","kategori":"Nyckelord","forklaring":"Skickar tillbaka ett v\u00E4rde fr\u00E5n en metod och avslutar metoden direkt.","exempel":"public static int Dubbla(int tal)\n{\n    return tal * 2;\n}","ord":"returnera svar returv\u00E4rde","guide":"guider/metoder.md"},{"namn":"void","kategori":"Nyckelord","forklaring":"Returtyp f\u00F6r metoder som inte skickar tillbaka n\u00E5got v\u00E4rde.","exempel":"public static void SagHej(string namn)\n{\n    Console.WriteLine($\u0022Hej {namn}!\u0022);\n}","ord":"ingen returtyp inget v\u00E4rde","guide":"guider/metoder.md#metoder-som-inte-returnerar-n\u00E5got-void"},{"namn":"static","kategori":"Nyckelord","forklaring":"Metoden h\u00F6r till klassen sj\u00E4lv och anropas med klassnamnet, utan att skapa ett objekt. Alla metoder i \u00F6vningarna \u00E4r static.","exempel":"public static class Rakna\n{\n    public static int Dubbla(int tal) =\u003E tal * 2;\n}\n\nint svar = Rakna.Dubbla(4);","ord":"statisk","guide":"guider/metoder.md"},{"namn":"public / private","kategori":"Nyckelord","forklaring":"Best\u00E4mmer vem som f\u00E5r anv\u00E4nda klassen eller metoden. public = alla, \u00E4ven andra projekt och testerna. private = bara koden i samma klass.","exempel":"public static int Synlig() =\u003E 1;\nprivate static int Hemlig() =\u003E 2;","ord":"synlighet \u00E5tkomst access modifier","guide":""},{"namn":"class","kategori":"Nyckelord","forklaring":"En klass samlar metoder (och data) som h\u00F6r ihop. All kod i C# ligger i klasser.","exempel":"public static class Kalkylator\n{\n    public static int Addera(int a, int b) =\u003E a \u002B b;\n}","ord":"klass","guide":"guider/filstruktur.md"},{"namn":"namespace","kategori":"Nyckelord","forklaring":"Ett efternamn f\u00F6r klasser, som h\u00E5ller is\u00E4r klasser som heter likadant. St\u00E5r \u00F6verst i filen.","exempel":"namespace Grunder;\n\npublic static class Ovningar { }","ord":"namnrymd","guide":"guider/filstruktur.md#namespace-och-using"},{"namn":"using","kategori":"Nyckelord","forklaring":"G\u00F6r klasserna i ett annat namespace tillg\u00E4ngliga i filen. Skrivs h\u00F6gst upp.","exempel":"using Verktyg;\n\nConsole.WriteLine(Halsning.Skapa(\u0022klassen\u0022));","ord":"importera namespace","guide":"guider/filstruktur.md#namespace-och-using"},{"namn":"new","kategori":"Nyckelord","forklaring":"Skapar n\u00E5got nytt, till exempel en array, en lista eller ett objekt.","exempel":"int[] tal = new int[5];\nList\u003Cstring\u003E namn = new List\u003Cstring\u003E();","ord":"skapa ny","guide":""},{"namn":"var","kategori":"Nyckelord","forklaring":"L\u00E5ter kompilatorn r\u00E4kna ut typen. Typen best\u00E4ms \u00E4nd\u00E5 en g\u00E5ng f\u00F6r alla.","exempel":"var antal = 42;          // blir int\nvar namn = \u0022Sara\u0022;       // blir string","ord":"typinferens","guide":"guider/variabler-och-datatyper.md#var-l\u00E5t-datorn-r\u00E4kna-ut-typen"},{"namn":"const","kategori":"Nyckelord","forklaring":"Ett v\u00E4rde som aldrig kan \u00E4ndras. Namnet skrivs med PascalCase.","exempel":"const int MaxAntal = 10;\nconst double Moms = 0.25;","ord":"konstant","guide":""},{"namn":"true / false","kategori":"Nyckelord","forklaring":"De tv\u00E5 v\u00E4rden som en bool kan ha.","exempel":"bool klar = true;","ord":"sant falskt","guide":""},{"namn":"null","kategori":"Nyckelord","forklaring":"Betyder \u0022inget v\u00E4rde\u0022. En variabel som \u00E4r null pekar inte p\u00E5 n\u00E5got, och anv\u00E4nds den blir det NullReferenceException.","exempel":"string? namn = null;\nif (namn != null)\n{\n    Console.WriteLine(namn.Length);\n}","ord":"ingenting tom","guide":""},{"namn":"try / catch","kategori":"Nyckelord","forklaring":"F\u00E5ngar ett fel (exception) s\u00E5 att programmet inte kraschar.","exempel":"try\n{\n    int tal = int.Parse(text);\n}\ncatch (FormatException)\n{\n    Console.WriteLine(\u0022Det d\u00E4r var inget tal.\u0022);\n}","ord":"felhantering exception f\u00E5nga","guide":""},{"namn":"throw","kategori":"Nyckelord","forklaring":"Kastar ett fel (exception). Uppgifterna b\u00F6rjar med throw new NotImplementedException();","exempel":"throw new NotImplementedException();\nthrow new ArgumentException(\u0022Talet f\u00E5r inte vara negativt\u0022);","ord":"kasta fel","guide":""},{"namn":"int","kategori":"Datatyper","forklaring":"Heltal, fr\u00E5n ungef\u00E4r \u22122,1 till \u002B2,1 miljarder.","exempel":"int antal = 42;\nint stort = int.MaxValue;   // 2147483647","ord":"heltal integer","guide":"guider/variabler-och-datatyper.md#de-vanligaste-datatyperna"},{"namn":"double","kategori":"Datatyper","forklaring":"Decimaltal. Skriv punkt i koden: 3.5. Delning med heltal ger heltal, s\u00E5 g\u00F6r om till double f\u00F6rst.","exempel":"double pris = 19.90;\ndouble medel = (double)summa / antal;","ord":"decimaltal flyttal komma","guide":"guider/variabler-och-datatyper.md#de-vanligaste-datatyperna"},{"namn":"decimal","kategori":"Datatyper","forklaring":"Exakt decimaltal, bra f\u00F6r pengar. Skrivs med m p\u00E5 slutet.","exempel":"decimal pris = 19.90m;","ord":"pengar exakt","guide":""},{"namn":"bool","kategori":"Datatyper","forklaring":"Sant eller falskt: true eller false. Anv\u00E4nds i villkor.","exempel":"bool arMyndig = alder \u003E= 18;","ord":"boolean sant falskt","guide":"guider/variabler-och-datatyper.md#de-vanligaste-datatyperna"},{"namn":"string","kategori":"Datatyper","forklaring":"Text inom dubbla citattecken.","exempel":"string namn = \u0022Sara\u0022;\nint langd = namn.Length;","ord":"text str\u00E4ng","guide":"guider/variabler-och-datatyper.md#arbeta-med-text"},{"namn":"char","kategori":"Datatyper","forklaring":"Ett enda tecken inom enkla citattecken. En string best\u00E5r av char.","exempel":"char bokstav = \u0027A\u0027;\nchar forsta = namn[0];","ord":"tecken bokstav","guide":"guider/variabler-och-datatyper.md#arbeta-med-text"},{"namn":"Typomvandling (cast)","kategori":"Datatyper","forklaring":"G\u00F6r om ett v\u00E4rde till en annan typ. (int) klipper bort decimalerna.","exempel":"double d = 3.9;\nint i = (int)d;            // 3\ndouble x = (double)7 / 2;  // 3.5","ord":"konvertera omvandla cast","guide":"guider/variabler-och-datatyper.md#byta-mellan-typer"},{"namn":"int.Parse","kategori":"Datatyper","forklaring":"G\u00F6r om text till ett heltal. Ger FormatException om texten inte \u00E4r ett tal.","exempel":"int tal = int.Parse(\u002242\u0022);","ord":"text till tal konvertera","guide":"guider/variabler-och-datatyper.md#byta-mellan-typer"},{"namn":"int.TryParse","kategori":"Datatyper","forklaring":"F\u00F6rs\u00F6ker g\u00F6ra om text till tal utan att krascha. Returnerar true om det gick.","exempel":"if (int.TryParse(text, out int tal))\n{\n    Console.WriteLine(tal * 2);\n}","ord":"s\u00E4kert text till tal","guide":""},{"namn":"ToString","kategori":"Datatyper","forklaring":"G\u00F6r om ett v\u00E4rde till text.","exempel":"string text = 42.ToString();   // \u002242\u0022 ","ord":"till text","guide":""},{"namn":"\u002B - * /","kategori":"Operatorer","forklaring":"R\u00E4knes\u00E4tten. OBS: 7 / 2 blir 3 n\u00E4r b\u00E5da \u00E4r int (heltalsdivision).","exempel":"int a = 7 / 2;        // 3\ndouble b = 7.0 / 2;   // 3.5","ord":"plus minus g\u00E5nger delat r\u00E4kna","guide":"guider/variabler-och-datatyper.md#r\u00E4kna-med-variabler"},{"namn":"% (modulo)","kategori":"Operatorer","forklaring":"Resten vid division. Bra f\u00F6r att kolla j\u00E4mna tal och delbarhet.","exempel":"int rest = 17 % 5;          // 2\nbool jamnt = tal % 2 == 0;","ord":"rest modulus delbar j\u00E4mnt udda","guide":"guider/variabler-och-datatyper.md#r\u00E4kna-med-variabler"},{"namn":"== och !=","kategori":"Operatorer","forklaring":"\u00C4r lika med / \u00E4r inte lika med. Ger en bool. F\u00F6rv\u00E4xla inte med = som tilldelar.","exempel":"if (svar == 42) { }\nif (namn != \u0022\u0022) { }","ord":"lika j\u00E4mf\u00F6ra","guide":"guider/villkor-och-loopar.md#j\u00E4mf\u00F6relser"},{"namn":"\u003C \u003E \u003C= \u003E=","kategori":"Operatorer","forklaring":"Mindre \u00E4n, st\u00F6rre \u00E4n, mindre \u00E4n eller lika med, st\u00F6rre \u00E4n eller lika med.","exempel":"if (alder \u003E= 18) { }","ord":"j\u00E4mf\u00F6ra st\u00F6rre mindre","guide":"guider/villkor-och-loopar.md#j\u00E4mf\u00F6relser"},{"namn":"\u0026\u0026 || !","kategori":"Operatorer","forklaring":"Och, eller, inte. Kombinerar villkor.","exempel":"if (alder \u003E= 13 \u0026\u0026 alder \u003C= 19) { }   // ton\u00E5ring\nif (dag == 6 || dag == 7) { }         // helg\nif (!klar) { }                         // inte klar","ord":"och eller inte logik","guide":"guider/villkor-och-loopar.md#kombinera-villkor"},{"namn":"\u002B\u002B och --","kategori":"Operatorer","forklaring":"\u00D6kar eller minskar en variabel med 1.","exempel":"antal\u002B\u002B;   // samma som antal = antal \u002B 1\ni--;","ord":"\u00F6ka minska plus plus","guide":""},{"namn":"\u002B= -= *=","kategori":"Operatorer","forklaring":"Kortform f\u00F6r att \u00E4ndra en variabel utifr\u00E5n sitt eget v\u00E4rde.","exempel":"summa \u002B= tal;      // summa = summa \u002B tal\ntext \u002B= \u0022!\u0022;","ord":"l\u00E4gg till kortform","guide":"guider/variabler-och-datatyper.md#kortformer"},{"namn":"? : (villkorsoperatorn)","kategori":"Operatorer","forklaring":"Kort if/else som ger ett v\u00E4rde.","exempel":"string text = poang \u003E= 50 ? \u0022Godk\u00E4nd\u0022 : \u0022Inte godk\u00E4nd\u0022;","ord":"ternary kort if","guide":""},{"namn":"=\u003E (lambda / kort metod)","kategori":"Operatorer","forklaring":"Anv\u00E4nds f\u00F6r korta metoder med bara en rad, och f\u00F6r lambdauttryck.","exempel":"public static int Dubbla(int tal) =\u003E tal * 2;","ord":"pil expression bodied","guide":""},{"namn":"$\u0022...\u0022 (str\u00E4nginterpolering)","kategori":"Text","forklaring":"S\u00E4tt ihop text och variabler. Variablerna skrivs inom { }.","exempel":"string namn = \u0022Ali\u0022;\nint alder = 16;\nstring text = $\u0022{namn} \u00E4r {alder} \u00E5r.\u0022;","ord":"interpolation s\u00E4tta ihop text","guide":"guider/variabler-och-datatyper.md#text-och-v\u00E4rden-tillsammans"},{"namn":"Length (text)","kategori":"Text","forklaring":"Antal tecken i en str\u00E4ng.","exempel":"\u0022hej\u0022.Length   // 3","ord":"l\u00E4ngd antal tecken","guide":"guider/variabler-och-datatyper.md#arbeta-med-text"},{"namn":"text[i]","kategori":"Text","forklaring":"H\u00E4mtar tecknet p\u00E5 plats i. F\u00F6rsta tecknet har index 0.","exempel":"string ord = \u0022Hej\u0022;\nchar forsta = ord[0];               // \u0027H\u0027\nchar sista = ord[ord.Length - 1];   // \u0027j\u0027","ord":"index tecken","guide":"guider/variabler-och-datatyper.md#arbeta-med-text"},{"namn":"ToUpper / ToLower","kategori":"Text","forklaring":"G\u00F6r om till stora eller sm\u00E5 bokst\u00E4ver.","exempel":"\u0022Hej\u0022.ToUpper()   // \u0022HEJ\u0022","ord":"versaler gemener stora sm\u00E5 bokst\u00E4ver","guide":""},{"namn":"Contains","kategori":"Text","forklaring":"Kollar om en text inneh\u00E5ller en annan text.","exempel":"\u0022banan\u0022.Contains(\u0022nan\u0022)   // true","ord":"inneh\u00E5ller s\u00F6ka","guide":""},{"namn":"Replace","kategori":"Text","forklaring":"Byter ut text mot annan text.","exempel":"\u0022hej d\u00E5\u0022.Replace(\u0022d\u00E5\u0022, \u0022igen\u0022)   // \u0022hej igen\u0022","ord":"byta ers\u00E4tta","guide":""},{"namn":"Split","kategori":"Text","forklaring":"Delar upp en text i en array.","exempel":"string[] ord = \u0022\u00E4pple,p\u00E4ron,kiwi\u0022.Split(\u0027,\u0027);","ord":"dela upp","guide":""},{"namn":"Substring","kategori":"Text","forklaring":"Plockar ut en del av en text: fr\u00E5n index och ett antal tecken.","exempel":"\u0022programmering\u0022.Substring(0, 7)   // \u0022program\u0022","ord":"del av text","guide":""},{"namn":"Trim","kategori":"Text","forklaring":"Tar bort mellanslag i b\u00F6rjan och slutet.","exempel":"\u0022  hej  \u0022.Trim()   // \u0022hej\u0022","ord":"ta bort mellanslag","guide":""},{"namn":"string.Join","kategori":"Text","forklaring":"S\u00E4tter ihop en array eller lista till en text, med en avgr\u00E4nsare.","exempel":"int[] tal = { 1, 2, 3 };\nstring text = string.Join(\u0022, \u0022, tal);   // \u00221, 2, 3\u0022 ","ord":"s\u00E4tta ihop lista","guide":""},{"namn":"Console.WriteLine","kategori":"Text","forklaring":"Skriver ut en rad i konsolf\u00F6nstret. Anv\u00E4nd i Provk\u00F6r, inte i klassbiblioteken.","exempel":"Console.WriteLine(\u0022Hej!\u0022);\nConsole.WriteLine($\u0022Summan \u00E4r {summa}\u0022);","ord":"skriv ut utskrift print cw","guide":"guider/testkora.md"},{"namn":"Console.ReadLine","kategori":"Text","forklaring":"L\u00E4ser en rad som anv\u00E4ndaren skriver in.","exempel":"Console.Write(\u0022Vad heter du? \u0022);\nstring? namn = Console.ReadLine();","ord":"l\u00E4sa in input","guide":""},{"namn":"int[] (array)","kategori":"Arrayer och listor","forklaring":"En rad med v\u00E4rden av samma typ och fast l\u00E4ngd. Index b\u00F6rjar p\u00E5 0.","exempel":"int[] tal = { 4, 9, 2 };\nint[] tomma = new int[10];\nint forsta = tal[0];","ord":"array f\u00E4lt vektor","guide":"guider/villkor-och-loopar.md#arrayer"},{"namn":"Length (array)","kategori":"Arrayer och listor","forklaring":"Antal platser i en array. Sista index \u00E4r Length - 1.","exempel":"for (int i = 0; i \u003C tal.Length; i\u002B\u002B)\n{\n    Console.WriteLine(tal[i]);\n}","ord":"l\u00E4ngd antal","guide":"guider/villkor-och-loopar.md#arrayer"},{"namn":"List\u003CT\u003E","kategori":"Arrayer och listor","forklaring":"En lista som kan v\u00E4xa och krympa. T \u00E4r typen, t.ex. List\u003Cint\u003E.","exempel":"List\u003Cint\u003E tal = new List\u003Cint\u003E { 5, 3 };\ntal.Add(8);\nint antal = tal.Count;   // 3","ord":"lista list","guide":""},{"namn":"Add / Remove","kategori":"Arrayer och listor","forklaring":"L\u00E4gger till eller tar bort i en lista.","exempel":"lista.Add(7);\nlista.Remove(7);\nlista.RemoveAt(0);   // ta bort p\u00E5 index 0","ord":"l\u00E4gg till ta bort","guide":""},{"namn":"Count (lista)","kategori":"Arrayer och listor","forklaring":"Antal saker i en List. (Arrayer anv\u00E4nder Length.)","exempel":"int antal = lista.Count;","ord":"antal storlek","guide":""},{"namn":"Kopiera en lista","kategori":"Arrayer och listor","forklaring":"Skapa en ny lista med samma inneh\u00E5ll, s\u00E5 att originalet inte \u00E4ndras.","exempel":"var kopia = new List\u003Cint\u003E(lista);","ord":"kopia ny lista","guide":""},{"namn":"Metod","kategori":"Metoder","forklaring":"En namngiven bit kod som g\u00F6r en sak. Har returtyp, namn, parametrar och kropp.","exempel":"public static int Kvadrat(int tal)\n{\n    return tal * tal;\n}","ord":"funktion method","guide":"guider/metoder.md"},{"namn":"Parameter och argument","kategori":"Metoder","forklaring":"Parametern \u00E4r namnet i metoden (tal). Argumentet \u00E4r v\u00E4rdet du skickar in (5).","exempel":"public static int Kvadrat(int tal) { ... }   // tal \u00E4r en parameter\nKvadrat(5);                                  // 5 \u00E4r ett argument","ord":"inparameter v\u00E4rde","guide":"guider/metoder.md#anropa-en-metod"},{"namn":"Anropa en metod","kategori":"Metoder","forklaring":"Skriv klassnamn, punkt, metodnamn och argument inom parentes.","exempel":"int storst = Ovningar.StorstAvTva(3, 8);","ord":"anrop k\u00F6ra metod","guide":"guider/metoder.md#anropa-en-metod"},{"namn":"\u00D6verlagring (overload)","kategori":"Metoder","forklaring":"Flera metoder med samma namn men olika parametrar.","exempel":"public static double MedMoms(double pris) { ... }\npublic static double MedMoms(double pris, double procent) { ... }","ord":"overload samma namn","guide":"guider/versionering.md"},{"namn":"Math.Round","kategori":"Metoder","forklaring":"Avrundar. Obs: Math.Round(2.5) ger 2 (till j\u00E4mnt tal). Anv\u00E4nd MidpointRounding.AwayFromZero f\u00F6r vanlig avrundning.","exempel":"Math.Round(2.567, 2)                            // 2.57\nMath.Round(2.5, MidpointRounding.AwayFromZero)  // 3","ord":"avrunda","guide":""},{"namn":"Math.Max / Math.Min","kategori":"Metoder","forklaring":"Ger det st\u00F6rsta eller minsta av tv\u00E5 tal. (I vissa \u00F6vningar ska du g\u00F6ra det sj\u00E4lv med if.)","exempel":"int storst = Math.Max(3, 8);   // 8","ord":"st\u00F6rsta minsta","guide":""},{"namn":"Math.Abs","kategori":"Metoder","forklaring":"Absolutbelopp: tar bort minustecknet.","exempel":"Math.Abs(-5)   // 5","ord":"absolutbelopp","guide":""},{"namn":"Math.Pow / Math.Sqrt","kategori":"Metoder","forklaring":"Upph\u00F6jt till och kvadratrot. Ger double.","exempel":"Math.Pow(2, 10)   // 1024\nMath.Sqrt(16)     // 4","ord":"potens roten ur","guide":""},{"namn":"Random","kategori":"Metoder","forklaring":"Slumptal. Next(1, 7) ger 1\u20136.","exempel":"var slump = new Random();\nint tarning = slump.Next(1, 7);","ord":"slump slumptal","guide":""},{"namn":"Variabel","kategori":"Begrepp","forklaring":"En namngiven l\u00E5da som h\u00E5ller ett v\u00E4rde av en viss typ.","exempel":"int alder = 16;","ord":"l\u00E5da v\u00E4rde","guide":"guider/variabler-och-datatyper.md#vad-\u00E4r-en-variabel"},{"namn":"Index","kategori":"Begrepp","forklaring":"Platsnumret i en array eller str\u00E4ng. B\u00F6rjar p\u00E5 0.","exempel":"tal[0]   // f\u00F6rsta","ord":"plats position nummer","guide":"guider/villkor-och-loopar.md#arrayer"},{"namn":"Startpunkt (Main / top-level)","kategori":"Begrepp","forklaring":"D\u00E4r ett program b\u00F6rjar. Antingen en Main-metod eller kod direkt i Program.cs. Bara en per program.","exempel":"// Program.cs\nConsole.WriteLine(\u0022Programmet b\u00F6rjar h\u00E4r\u0022);","ord":"main program.cs start","guide":"guider/filstruktur.md#startpunkten-var-programmet-b\u00F6rjar"},{"namn":"Klassbibliotek","kategori":"Begrepp","forklaring":"Ett projekt med klasser som andra anv\u00E4nder. Kan inte startas med \u25B6.","exempel":"","ord":"class library dll library","guide":"guider/filstruktur.md#k\u00F6rbart-program-eller-bibliotek"},{"namn":"Solution (.sln)","kategori":"Begrepp","forklaring":"En lista \u00F6ver projekt som h\u00F6r ihop. Det \u00E4r den du \u00F6ppnar i Visual Studio.","exempel":"","ord":"sln slnx","guide":"guider/filstruktur.md"},{"namn":"Projekt (.csproj)","kategori":"Begrepp","forklaring":"Inst\u00E4llningar f\u00F6r ett projekt: .NET-version, program eller bibliotek, referenser.","exempel":"","ord":"csproj projektfil","guide":"guider/filstruktur.md"},{"namn":"ProjectReference","kategori":"Begrepp","forklaring":"L\u00E5ter ett projekt anv\u00E4nda klasser fr\u00E5n ett annat projekt.","exempel":"\u003CProjectReference Include=\u0022..\\Grunder\\Grunder.csproj\u0022 /\u003E","ord":"referens","guide":"guider/filstruktur.md#referenser-hur-projekt-anv\u00E4nder-varandra"},{"namn":"bin och obj","kategori":"Begrepp","forklaring":"Mappar som skapas n\u00E4r du bygger. Ska inte pushas.","exempel":"","ord":"byggmapp","guide":"guider/filstruktur.md#bin-och-obj-det-som-skapas-n\u00E4r-du-bygger"},{"namn":"Test","kategori":"Begrepp","forklaring":"Kod som anropar din kod och kontrollerar svaret.","exempel":"Assert.Equal(8, Ovningar.StorstAvTva(3, 8));","ord":"assert xunit","guide":"guider/tester-och-autorattning.md"},{"namn":"Debugger och brytpunkt","kategori":"Begrepp","forklaring":"Pausa programmet p\u00E5 en rad (F9) och titta p\u00E5 variablerna. Stega med F10.","exempel":"","ord":"breakpoint debugga stega","guide":"guider/testkora.md#3-debuggern-stega-igenom-koden"},{"namn":"Kompileringsfel","kategori":"Begrepp","forklaring":"Koden g\u00E5r inte att bygga. R\u00F6da v\u00E5gstreck, och felkoder som b\u00F6rjar med CS.","exempel":"","ord":"byggfel compile error","guide":"guider/sa-fungerar-csharp.md#tre-sorters-fel"},{"namn":"Exception (k\u00F6rfel)","kategori":"Begrepp","forklaring":"Ett fel som uppst\u00E5r n\u00E4r programmet k\u00F6rs, s\u00E5 att det kraschar.","exempel":"","ord":"krasch runtime fel","guide":"guider/sa-fungerar-csharp.md#tre-sorters-fel"},{"namn":"PascalCase och camelCase","kategori":"Begrepp","forklaring":"Namnstandard. Klasser och metoder: PascalCase (SorteraLista). Variabler och parametrar: camelCase (antalElever).","exempel":"","ord":"namngivning namn kodstandard","guide":"guider/kodstandard.md#namn-ide1006"},{"namn":"Semantisk versionering","kategori":"Begrepp","forklaring":"MAJOR.MINOR.PATCH. PATCH = buggfix, MINOR = ny funktion, MAJOR = bryter andras kod.","exempel":"","ord":"semver version","guide":"guider/versionering.md"},{"namn":"CS1002: ; expected","kategori":"Felmeddelanden","forklaring":"Ett semikolon saknas i slutet av en sats.","exempel":"int x = 5     // \u2190 h\u00E4r saknas ;","ord":"semikolon","guide":"guider/sa-fungerar-csharp.md#tre-sorters-fel"},{"namn":"CS0103: The name \u0027X\u0027 does not exist","kategori":"Felmeddelanden","forklaring":"Kompilatorn hittar inte X. Stavfel, gl\u00F6md using, eller variabeln finns inte d\u00E4r du anv\u00E4nder den.","exempel":"","ord":"finns inte using stavfel","guide":"guider/skapa-projekt.md#vanliga-fel-och-vad-de-betyder"},{"namn":"CS0246: Type or namespace could not be found","kategori":"Felmeddelanden","forklaring":"Projektet saknar referens till det andra projektet, eller s\u00E5 saknas using.","exempel":"","ord":"projectreference using saknas","guide":"guider/skapa-projekt.md#vanliga-fel-och-vad-de-betyder"},{"namn":"CS0029: Cannot implicitly convert type","kategori":"Felmeddelanden","forklaring":"Fel typ, t.ex. text d\u00E4r det ska vara ett tal. G\u00F6r om typen eller \u00E4ndra variabeln.","exempel":"int tal = \u00225\u0022;   // fel","ord":"typ konvertera","guide":"guider/metoder.md#vanliga-fel"},{"namn":"CS0161: Not all code paths return a value","kategori":"Felmeddelanden","forklaring":"Det finns en v\u00E4g genom metoden som inte slutar med return.","exempel":"","ord":"return saknas","guide":"guider/metoder.md#vanliga-fel"},{"namn":"CS0165: Use of unassigned local variable","kategori":"Felmeddelanden","forklaring":"Variabeln anv\u00E4nds innan den har f\u00E5tt ett v\u00E4rde. Ge den ett startv\u00E4rde.","exempel":"int summa = 0;   // ge ett startv\u00E4rde","ord":"startv\u00E4rde tilldelad","guide":""},{"namn":"CS5001: No static \u0027Main\u0027 method","kategori":"Felmeddelanden","forklaring":"Programmet saknar startpunkt.","exempel":"","ord":"main startpunkt","guide":"guider/skapa-projekt.md#vanliga-fel-och-vad-de-betyder"},{"namn":"CS8802: Only one compilation unit can have top-level statements","kategori":"Felmeddelanden","forklaring":"Tv\u00E5 filer har kod utanf\u00F6r en klass. Bara en fil f\u00E5r det.","exempel":"","ord":"top-level tv\u00E5 filer","guide":"guider/skapa-projekt.md#vanliga-fel-och-vad-de-betyder"},{"namn":"IndexOutOfRangeException","kategori":"Felmeddelanden","forklaring":"Du f\u00F6rs\u00F6ker l\u00E4sa en plats som inte finns, t.ex. tal[tal.Length]. Sista index \u00E4r Length - 1.","exempel":"","ord":"index utanf\u00F6r array","guide":"guider/sa-fungerar-csharp.md#2-k\u00F6rfel-programmet-kraschar"},{"namn":"NullReferenceException","kategori":"Felmeddelanden","forklaring":"Du anv\u00E4nder n\u00E5got som \u00E4r null.","exempel":"","ord":"null","guide":"guider/sa-fungerar-csharp.md#2-k\u00F6rfel-programmet-kraschar"},{"namn":"FormatException","kategori":"Felmeddelanden","forklaring":"int.Parse fick text som inte \u00E4r ett tal. Anv\u00E4nd int.TryParse.","exempel":"","ord":"parse text tal","guide":"guider/sa-fungerar-csharp.md#2-k\u00F6rfel-programmet-kraschar"},{"namn":"DivideByZeroException","kategori":"Felmeddelanden","forklaring":"Du delade ett heltal med 0.","exempel":"","ord":"dela med noll","guide":"guider/sa-fungerar-csharp.md#2-k\u00F6rfel-programmet-kraschar"},{"namn":"NotImplementedException","kategori":"Felmeddelanden","forklaring":"Metoden \u00E4r inte skriven \u00E4n. Byt ut throw-raden mot din kod.","exempel":"","ord":"inte p\u00E5b\u00F6rjad","guide":"guider/sa-fungerar-csharp.md#2-k\u00F6rfel-programmet-kraschar"},{"namn":"Class library cannot be started directly","kategori":"Felmeddelanden","forklaring":"Du trycker \u25B6 p\u00E5 ett klassbibliotek. V\u00E4lj ett Provk\u00F6r-projekt som startprojekt.","exempel":"","ord":"startprojekt starta bibliotek","guide":"guider/filstruktur.md#k\u00F6rbart-program-eller-bibliotek"},{"namn":"git status","kategori":"Git","forklaring":"Visar vad som har \u00E4ndrats och vad som \u00E4r n\u00E4sta steg. K\u00F6r den ofta!","exempel":"git status","ord":"l\u00E4ge status","guide":"guider/git-och-github.md#git-status-\u00E4r-din-b\u00E4sta-v\u00E4n"},{"namn":"git add","kategori":"Git","forklaring":"V\u00E4ljer vilka \u00E4ndringar som ska med i n\u00E4sta commit.","exempel":"git add .\ngit add Grunder.cs","ord":"l\u00E4gg till staging","guide":"guider/git-och-github.md#commit-en-sparpunkt"},{"namn":"git commit","kategori":"Git","forklaring":"Sparar en version med ett meddelande.","exempel":"git commit -m \u0022L\u00F6ste uppgift 3\u0022","ord":"spara version","guide":"guider/git-och-github.md#commit-en-sparpunkt"},{"namn":"git push","kategori":"Git","forklaring":"Skickar dina commits till GitHub (din fork).","exempel":"git push\ngit push --tags","ord":"skicka ladda upp","guide":"guider/git-och-github.md"},{"namn":"git pull","kategori":"Git","forklaring":"H\u00E4mtar och sl\u00E5r ihop \u00E4ndringar.","exempel":"git pull --no-rebase --no-edit upstream main","ord":"h\u00E4mta","guide":"guider/git-och-github.md"},{"namn":"git fetch","kategori":"Git","forklaring":"Kollar vad som finns p\u00E5 servern utan att \u00E4ndra dina filer.","exempel":"git fetch upstream","ord":"kolla uppdateringar","guide":"guider/git-och-github.md"},{"namn":"git log","kategori":"Git","forklaring":"Visar historiken.","exempel":"git log --oneline --graph --all","ord":"historik","guide":"guider/git-och-github.md"},{"namn":"git diff","kategori":"Git","forklaring":"Visar exakt vilka rader som \u00E4ndrats.","exempel":"git diff\ngit diff --staged","ord":"skillnad \u00E4ndringar","guide":""},{"namn":"git restore","kategori":"Git","forklaring":"\u00C5ngrar \u00E4ndringar i en fil, eller h\u00E4mtar en fil fr\u00E5n en gammal commit.","exempel":"git restore Grunder.cs\ngit restore --source a1b2c3d Grunder.cs","ord":"\u00E5ngra \u00E5terst\u00E4ll","guide":"guider/andra-historik.md"},{"namn":"git merge","kategori":"Git","forklaring":"Sl\u00E5r ihop en annan gren med din.","exempel":"git merge kompis\ngit merge --abort","ord":"sl\u00E5 ihop","guide":"guider/merge-konflikter.md"},{"namn":"Konfliktmarkeringar \u003C\u003C\u003C\u003C\u003C\u003C\u003C ======= \u003E\u003E\u003E\u003E\u003E\u003E\u003E","kategori":"Git","forklaring":"Visar en merge-konflikt i filen. V\u00E4lj vad som ska vara kvar och ta bort markeringarna.","exempel":"\u003C\u003C\u003C\u003C\u003C\u003C\u003C HEAD\ndin version\n=======\nden andra versionen\n\u003E\u003E\u003E\u003E\u003E\u003E\u003E kompis","ord":"konflikt merge conflict","guide":"guider/merge-konflikter.md#konfliktmarkeringarna"},{"namn":"git commit --amend","kategori":"Git","forklaring":"\u00C4ndrar den senaste commiten: meddelandet eller inneh\u00E5llet. Bara f\u00F6re push!","exempel":"git commit --amend -m \u0022B\u00E4ttre meddelande\u0022\ngit commit --amend --no-edit","ord":"\u00E4ndra senaste commit","guide":"guider/andra-historik.md"},{"namn":"git revert","kategori":"Git","forklaring":"Skapar en ny commit som tar bort \u00E4ndringarna fr\u00E5n en gammal commit. S\u00E4kert \u00E4ven efter push.","exempel":"git revert a1b2c3d","ord":"\u00E5ngra gammal commit","guide":"guider/andra-historik.md"},{"namn":"git rebase -i","kategori":"Git","forklaring":"Skriv om historiken: byt meddelande (reword), sl\u00E5 ihop (fixup/squash), ta bort (drop), \u00E4ndra (edit).","exempel":"git rebase -i HEAD~4","ord":"interaktiv rebase skriva om historik","guide":"guider/andra-historik.md"},{"namn":"git cherry-pick","kategori":"Git","forklaring":"Kopierar en enskild commit fr\u00E5n en annan gren till din.","exempel":"git cherry-pick a1b2c3d","ord":"plocka commit","guide":"guider/andra-historik.md"},{"namn":"git bisect","kategori":"Git","forklaring":"Hittar vilken commit som inf\u00F6rde en bugg genom att halvera historiken.","exempel":"git bisect start\ngit bisect bad\ngit bisect good a1b2c3d","ord":"hitta bugg bin\u00E4rs\u00F6kning","guide":"guider/andra-historik.md"},{"namn":"git reset","kategori":"Git","forklaring":"Flyttar grenen bak\u00E5t. --soft beh\u00E5ller \u00E4ndringarna, --hard kastar dem. Bara f\u00F6re push!","exempel":"git reset --soft HEAD~1\ngit reset --hard HEAD~2","ord":"\u00E5ngra commits","guide":"guider/andra-historik.md"},{"namn":"git reflog","kategori":"Git","forklaring":"Visar allt HEAD har pekat p\u00E5. Livlinan om du har tappat bort commits.","exempel":"git reflog","ord":"hitta f\u00F6rlorad commit","guide":"guider/andra-historik.md"},{"namn":"git tag","kategori":"Git","forklaring":"S\u00E4tter en etikett, t.ex. en version, p\u00E5 en commit.","exempel":"git tag v1.0.1\ngit push --tags","ord":"version etikett","guide":"guider/versionering.md#git-taggar-m\u00E4rk-en-version-i-historiken"},{"namn":"git remote","kategori":"Git","forklaring":"Visar och l\u00E4gger till adresser till andra repon (origin, upstream).","exempel":"git remote -v\ngit remote add upstream \u003Cadress\u003E","ord":"origin upstream","guide":"guider/git-och-github.md#remote-en-kopia-n\u00E5gon-annanstans"},{"namn":"git blame","kategori":"Git","forklaring":"Visar vem som senast \u00E4ndrade varje rad, och i vilken commit.","exempel":"git blame Betyg.cs","ord":"vem \u00E4ndrade","guide":"guider/andra-historik.md"},{"namn":"dotnet build","kategori":"dotnet","forklaring":"Bygger koden och visar fel.","exempel":"dotnet build","ord":"bygga kompilera","guide":""},{"namn":"dotnet run","kategori":"dotnet","forklaring":"Bygger och k\u00F6r ett program.","exempel":"dotnet run --project 01-grunder/Grunder.Provkor","ord":"k\u00F6ra starta","guide":""},{"namn":"dotnet test","kategori":"dotnet","forklaring":"K\u00F6r testerna.","exempel":"dotnet test\ndotnet test --filter \u0022DisplayName~04 \u00B7\u0022","ord":"testa tester","guide":""},{"namn":"dotnet new","kategori":"dotnet","forklaring":"Skapar ett nytt projekt eller en ny solution.","exempel":"dotnet new console -n MinApp\ndotnet new classlib -n MittBibliotek\ndotnet new sln -n MinApp","ord":"skapa projekt","guide":"guider/skapa-projekt.md"},{"namn":"dotnet sln add","kategori":"dotnet","forklaring":"L\u00E4gger till ett projekt i en solution.","exempel":"dotnet sln MinApp.slnx add MinApp\\MinApp.csproj","ord":"solution l\u00E4gg till","guide":"guider/skapa-projekt.md"},{"namn":"dotnet add reference","kategori":"dotnet","forklaring":"L\u00E4gger till en ProjectReference.","exempel":"dotnet add MinApp\\MinApp.csproj reference MittBibliotek\\MittBibliotek.csproj","ord":"referens","guide":"guider/skapa-projekt.md"},{"namn":"dotnet format","kategori":"dotnet","forklaring":"R\u00E4ttar formatering och kodstil automatiskt.","exempel":"dotnet format 01-grunder/Grunder","ord":"formatera kodstil","guide":"guider/kodstandard.md#fixa-automatiskt"},{"namn":"Ctrl\u002BShift\u002BB","kategori":"Visual Studio","forklaring":"Bygg solutionen.","exempel":"","ord":"bygga kortkommando","guide":"guider/visual-studio-och-vscode.md"},{"namn":"F5 / Ctrl\u002BF5","kategori":"Visual Studio","forklaring":"K\u00F6r med debugger / utan debugger.","exempel":"","ord":"k\u00F6ra starta kortkommando","guide":"guider/visual-studio-och-vscode.md"},{"namn":"F9 / F10 / F11","kategori":"Visual Studio","forklaring":"Brytpunkt / n\u00E4sta rad / g\u00E5 in i metoden.","exempel":"","ord":"debugga brytpunkt stega","guide":"guider/testkora.md#3-debuggern-stega-igenom-koden"},{"namn":"Ctrl\u002BK, Ctrl\u002BD","kategori":"Visual Studio","forklaring":"Formatera filen. (VS Code: Shift\u002BAlt\u002BF)","exempel":"","ord":"formatera indrag","guide":"guider/kodstandard.md"},{"namn":"Ctrl\u002B.","kategori":"Visual Studio","forklaring":"Snabbfix, gl\u00F6dlampan: f\u00F6rslag p\u00E5 hur ett fel kan r\u00E4ttas.","exempel":"","ord":"snabbfix gl\u00F6dlampa quick fix","guide":"guider/visual-studio-och-vscode.md"},{"namn":"Ctrl\u002BR, A","kategori":"Visual Studio","forklaring":"K\u00F6r alla tester.","exempel":"","ord":"testa","guide":"guider/visual-studio-och-vscode.md"},{"namn":"F12","kategori":"Visual Studio","forklaring":"G\u00E5 till definitionen av en metod eller klass.","exempel":"","ord":"g\u00E5 till definition","guide":"guider/visual-studio-och-vscode.md"},{"namn":"Ctrl\u002BK, Ctrl\u002BC / Ctrl\u002BK, Ctrl\u002BU","kategori":"Visual Studio","forklaring":"Kommentera bort / ta bort kommentar p\u00E5 markerade rader.","exempel":"","ord":"kommentera","guide":"guider/visual-studio-och-vscode.md"},{"namn":"cw \u002B Tab Tab","kategori":"Visual Studio","forklaring":"Kodsnutt som skriver Console.WriteLine();","exempel":"","ord":"snippet kodsnutt","guide":"guider/visual-studio-och-vscode.md"},{"namn":"Set as Startup Project","kategori":"Visual Studio","forklaring":"H\u00F6gerklicka p\u00E5 ett projekt f\u00F6r att v\u00E4lja vad \u25B6 ska k\u00F6ra.","exempel":"","ord":"startprojekt","guide":"guider/visual-studio-och-vscode.md"}]},"guideprefix":"","progression":null}</script>
+<script>
+"use strict";
+const DATA = JSON.parse(document.getElementById("data").textContent);
+
+// ---------------------------------------------------------------- hjälp
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const procent = (ok, tot) => (tot ? Math.round((100 * ok) / tot) : 0);
+
+// ---------------------------------------------------------------- sökning
+function normalisera(text) {
+  return String(text ?? "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+}
+
+function sok(poster, fraga, kategori) {
+  const q = normalisera(fraga).trim();
+  const ord = q.split(/\s+/).filter(Boolean);
+  const traffar = [];
+  for (const p of poster) {
+    if (kategori && p.kategori !== kategori) continue;
+    if (!ord.length) { traffar.push({ p, poang: 0 }); continue; }
+    const namn = normalisera(p.namn), extra = normalisera(p.ord);
+    const text = normalisera(p.forklaring), kod = normalisera(p.exempel);
+    let poang = 0, allaFinns = true;
+    for (const o of ord) {
+      let bast = 0;
+      if (namn === o) bast = 100;
+      else if (namn.startsWith(o)) bast = 60;
+      else if (namn.includes(o)) bast = 40;
+      else if (extra.includes(o)) bast = 25;
+      else if (text.includes(o)) bast = 10;
+      else if (kod.includes(o)) bast = 5;
+      if (!bast) { allaFinns = false; break; }
+      poang += bast;
+    }
+    if (allaFinns) traffar.push({ p, poang });
+  }
+  traffar.sort((a, b) => b.poang - a.poang || a.p.namn.localeCompare(b.p.namn, "sv"));
+  return traffar.map((t) => t.p);
+}
+
+function markera(text, fraga) {
+  let html = esc(text);
+  const ord = fraga.trim().split(/\s+/).filter((o) => o.length > 0);
+  for (const o of ord) {
+    const re = new RegExp("(" + o.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+    html = html.replace(re, "<mark>$1</mark>");
+  }
+  return html;
+}
+
+// ---------------------------------------------------------------- flikar
+const FLIKAR = DATA.progression
+  ? [["oversikt", "Översikt"], ["tester", "Alla tester"], ["tips", "Kodtips"], ["uppslag", "Uppslagsbok"]]
+  : [["uppslag", "Uppslagsbok"]];
+
+function visaFlik(id) {
+  for (const [f] of [["oversikt"], ["tester"], ["tips"], ["uppslag"]]) {
+    $("flik-" + f).hidden = f !== id;
+  }
+  for (const b of $("flikar").children) b.setAttribute("aria-selected", b.dataset.flik === id);
+  if (id === "uppslag") $("sok").focus();
+  try { history.replaceState(null, "", "#" + id); } catch { /* fungerar inte i alla webbläsare för lokala filer */ }
+}
+
+$("flikar").innerHTML = FLIKAR.map(([id, namn]) => `<button role="tab" data-flik="${id}">${namn}</button>`).join("");
+$("flikar").addEventListener("click", (e) => { if (e.target.dataset.flik) visaFlik(e.target.dataset.flik); });
+
+// ---------------------------------------------------------------- progression
+function ritaProgression(d) {
+  $("titel").textContent = `Min progression – ${d.elev}`;
+  $("undertitel").textContent = `Uppdaterad ${d.tid}`;
+  $("totalt").innerHTML = d.byggt
+    ? `<div class="tal">${procent(d.godkanda, d.totalt)} % <small>${d.godkanda} av ${d.totalt} tester</small></div>`
+    : "";
+
+  let html = "";
+  if (!d.byggt) {
+    html += `<div class="kort larm"><b>Koden gick inte att bygga</b>, så inga tester kunde köras.
+      Rätta felen nedan (dubbelklicka på felet i Error List i Visual Studio) och kör dashboarden igen.
+      <pre>${esc(d.byggfel.join("\n"))}</pre></div>`;
+  } else {
+    const nasta = d.tester.find((t) => !t.ok);
+    html += nasta
+      ? `<div class="kort nasta"><div class="rubrik">Nästa steg</div><div class="test">${esc(nasta.namn)}</div>
+         <div class="medd">${esc(nasta.meddelande)}</div></div>`
+      : `<div class="kort nasta"><div class="rubrik">Nästa steg</div><div class="test">🎉 Alla tester är gröna! Fantastiskt jobbat.</div></div>`;
+
+    html += `<h2>Övningar</h2><div class="rutnat">`;
+    for (const o of d.ovningar) {
+      const p = procent(o.godkanda, o.totalt), klar = o.godkanda === o.totalt;
+      html += `<div class="kort ovning"><div class="rad"><span class="nr">${esc(o.nr)}</span>
+        <span class="namn">${esc(o.namn)}</span><span class="antal">${klar ? "🏆 " : ""}${o.godkanda}/${o.totalt}</span></div>
+        <div class="stapel ${klar ? "klar" : ""}"><div style="width:${p}%"></div></div></div>`;
+    }
+    html += `</div>`;
+  }
+
+  if (d.historik.length) {
+    html += `<h2>Utveckling</h2><div class="kort historik">${graf(d.historik)}
+      <table><thead><tr><th>När</th><th>Godkända</th><th>Förändring</th></tr></thead><tbody>`;
+    const h = d.historik;
+    for (let i = h.length - 1; i >= Math.max(0, h.length - 8); i--) {
+      const diff = i > 0 ? h[i].godkanda - h[i - 1].godkanda : 0;
+      html += `<tr><td>${esc(h[i].tid)}</td><td class="tal">${h[i].godkanda}/${h[i].totalt}</td>
+        <td class="tal">${diff > 0 ? "+" + diff : diff < 0 ? diff : "±0"}</td></tr>`;
+    }
+    html += `</tbody></table></div>`;
+  }
+  $("flik-oversikt").innerHTML = html;
+
+  // Alla tester
+  let tester = `<label class="filter"><input type="checkbox" id="baraRoda"> Visa bara tester som inte är gröna</label>`;
+  for (const o of d.ovningar) {
+    const lista = d.tester.filter((t) => t.nr === o.nr);
+    tester += `<details class="kort grupp" ${o.godkanda < o.totalt ? "open" : ""}><summary>${esc(o.nr)} ${esc(o.namn)}
+      <span class="antal">${o.godkanda}/${o.totalt}</span></summary><table><tbody>`;
+    for (const t of lista) {
+      tester += `<tr class="${t.ok ? "gron" : "rod"}"><td>${t.ok ? '<span class="ikon-ok">✔</span>' : '<span class="ikon-fel">✘</span>'}</td>
+        <td>${esc(t.namn)}</td><td>${t.ok ? "" : esc(t.meddelande)}</td></tr>`;
+    }
+    tester += `</tbody></table></details>`;
+  }
+  $("flik-tester").innerHTML = tester;
+  $("baraRoda").addEventListener("change", (e) => {
+    document.querySelectorAll("tr.gron").forEach((r) => (r.hidden = e.target.checked));
+  });
+
+  // Kodtips
+  let tips = `<p>Tipsen påverkar <b>inte</b> rättningen. De hjälper dig att skriva kod som är lätt att läsa.
+    Läs mer i <code>guider/kodstandard.md</code>.</p>`;
+  if (!d.kodtips.length) {
+    tips += `<div class="kort tomt">✨ Inga tips. Din kod följer kodstandarden!</div>`;
+  } else {
+    tips += `<div class="kort"><table><thead><tr><th>Fil</th><th>Rad</th><th>Tips</th><th>Så fixar du</th></tr></thead><tbody>`;
+    for (const t of d.kodtips) {
+      tips += `<tr><td><code>${esc(t.fil)}</code></td><td class="tal">${t.rad}</td>
+        <td>${esc(t.problem)} <code>${esc(t.kod)}</code></td><td>${esc(t.losning)}</td></tr>`;
+    }
+    tips += `</tbody></table></div>`;
+  }
+  $("flik-tips").innerHTML = tips;
+}
+
+function graf(h) {
+  const n = h.length, B = 600, H = 80;
+  if (n < 2) return "";
+  const pkt = h.map((x, i) => [(i / (n - 1)) * B, H - (x.totalt ? (x.godkanda / x.totalt) : 0) * (H - 6) - 3]);
+  const linje = pkt.map((p) => p.map((v) => v.toFixed(1)).join(",")).join(" ");
+  return `<svg viewBox="0 0 ${B} ${H}" preserveAspectRatio="none" aria-label="Andel godkända tester över tid">
+    <polyline points="0,${H} ${linje} ${B},${H}" fill="var(--accent-ljus)" stroke="none"/>
+    <polyline points="${linje}" fill="none" stroke="var(--accent)" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`;
+}
+
+// ---------------------------------------------------------------- uppslagsbok
+let valdKategori = "";
+function ritaUppslag() {
+  const fraga = $("sok").value;
+  const lista = sok(DATA.uppslag.poster, fraga, valdKategori);
+  $("traffar").textContent = `${lista.length} av ${DATA.uppslag.poster.length} uppslag`;
+  $("resultat").innerHTML = lista.length
+    ? lista.map((p) => `<article class="kort post"><h3><code>${markera(p.namn, fraga)}</code>
+        <span class="kat">${esc(p.kategori)}</span></h3><p>${esc(p.forklaring)}</p>
+        ${p.exempel ? `<pre><code>${esc(p.exempel)}</code></pre>` : ""}
+        ${p.guide ? `<p><a href="${esc(DATA.guideprefix + p.guide)}">Läs mer i guiden →</a></p>` : ""}</article>`).join("")
+    : `<div class="kort tomt">Inga träffar. Prova ett annat ord, till exempel på svenska.</div>`;
+}
+$("chips").innerHTML = ["", ...DATA.uppslag.kategorier]
+  .map((k) => `<button class="chip" data-kat="${esc(k)}" aria-pressed="${k === ""}">${k || "Alla"}</button>`).join("");
+$("chips").addEventListener("click", (e) => {
+  if (e.target.dataset.kat === undefined) return;
+  valdKategori = e.target.dataset.kat;
+  for (const c of $("chips").children) c.setAttribute("aria-pressed", c.dataset.kat === valdKategori);
+  ritaUppslag();
+});
+$("sok").addEventListener("input", ritaUppslag);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "/" && document.activeElement !== $("sok")) { e.preventDefault(); visaFlik("uppslag"); }
+});
+
+// ---------------------------------------------------------------- start
+if (DATA.progression) {
+  ritaProgression(DATA.progression);
+  $("fot").textContent = "Skapad på din dator. Kör dashboard.cmd igen för att uppdatera.";
+} else {
+  $("titel").textContent = "Uppslagsbok – Lär dig C# med Oskar";
+  $("undertitel").textContent = "C#, Git, dotnet och Visual Studio, förklarat på svenska";
+  $("fot").textContent = "Fungerar utan internet.";
+}
+ritaUppslag();
+const start = location.hash.slice(1);
+visaFlik(FLIKAR.some(([f]) => f === start) ? start : FLIKAR[0][0]);
+</script>
+</body>
+</html>

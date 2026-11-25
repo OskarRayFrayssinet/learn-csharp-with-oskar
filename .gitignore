@@ -8,3 +8,5 @@ TestResults/
 *.user
 05-konflikter/labb/
 __pycache__/
+min-dashboard/
+07-historik/labb/

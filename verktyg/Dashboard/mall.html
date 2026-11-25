@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Min progression – Lär dig C# med Oskar</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --kort: #ffffff; --text: #1d2330; --svag: #5b6475; --linje: #e2e6ec;
+    --accent: #3559d6; --accent-ljus: #e8edfc; --ok: #1f8a4c; --ok-ljus: #e3f4ea;
+    --fel: #c23b3b; --fel-ljus: #fbe9e9; --varn: #a86a00; --varn-ljus: #fdf2dc;
+    --kod: #f0f2f6; --skugga: 0 1px 2px rgba(20,30,50,.06), 0 2px 8px rgba(20,30,50,.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12151b; --kort: #1b1f27; --text: #e6e9ef; --svag: #9aa3b2; --linje: #2b313c;
+      --accent: #7f9cff; --accent-ljus: #232c48; --ok: #4cc27f; --ok-ljus: #17301f;
+      --fel: #ef7a7a; --fel-ljus: #3a1c1c; --varn: #e6b04a; --varn-ljus: #352a13;
+      --kod: #222833; --skugga: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.5 "Segoe UI", system-ui, -apple-system, Roboto, sans-serif; }
+  header { background: var(--kort); border-bottom: 1px solid var(--linje); }
+  .inre { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+  .topp { display: flex; align-items: center; gap: 24px; padding: 22px 0 14px; flex-wrap: wrap; }
+  h1 { font-size: 22px; margin: 0; letter-spacing: -.01em; }
+  .under { color: var(--svag); font-size: 13px; margin-top: 2px; }
+  .totalt { margin-left: auto; text-align: right; }
+  .totalt .tal { font-size: 28px; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .totalt .tal small { font-size: 14px; color: var(--svag); font-weight: 400; }
+  nav { display: flex; gap: 4px; }
+  nav button { background: none; border: 0; border-bottom: 2px solid transparent; color: var(--svag);
+               padding: 10px 14px; font: inherit; cursor: pointer; }
+  nav button:hover { color: var(--text); }
+  nav button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+  main { padding: 24px 0 60px; }
+  section[hidden] { display: none; }
+  h2 { font-size: 16px; margin: 28px 0 12px; }
+  h2:first-child { margin-top: 0; }
+  .kort { background: var(--kort); border: 1px solid var(--linje); border-radius: 10px; box-shadow: var(--skugga); }
+  .rutnat { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+  .ovning { padding: 14px 16px; }
+  .ovning .rad { display: flex; align-items: baseline; gap: 8px; }
+  .ovning .nr { font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .ovning .namn { font-weight: 600; flex: 1; }
+  .ovning .antal { color: var(--svag); font-variant-numeric: tabular-nums; font-size: 13px; }
+  .stapel { height: 8px; background: var(--linje); border-radius: 99px; overflow: hidden; margin-top: 10px; }
+  .stapel > div { height: 100%; background: var(--accent); border-radius: 99px; }
+  .stapel.klar > div { background: var(--ok); }
+  .nasta { padding: 16px 18px; border-left: 4px solid var(--accent); }
+  .nasta .rubrik { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--svag); }
+  .nasta .test { font-weight: 600; font-size: 16px; margin: 4px 0; }
+  .nasta .medd { color: var(--svag); }
+  .larm { padding: 14px 18px; border-left: 4px solid var(--fel); background: var(--fel-ljus); }
+  .larm pre { white-space: pre-wrap; margin: 8px 0 0; }
+  .historik { padding: 16px 18px; }
+  .historik svg { width: 100%; height: 90px; display: block; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--linje); vertical-align: top; }
+  th { color: var(--svag); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  tr:last-child td { border-bottom: 0; }
+  td.tal { font-variant-numeric: tabular-nums; }
+  code, pre { font-family: "Cascadia Code", Consolas, "SF Mono", Menlo, monospace; font-size: 13px; }
+  details.grupp { margin-bottom: 8px; }
+  details.grupp summary { padding: 12px 16px; cursor: pointer; font-weight: 600; list-style: none; display: flex; gap: 10px; }
+  details.grupp summary::-webkit-details-marker { display: none; }
+  details.grupp summary::before { content: "▸"; color: var(--svag); }
+  details.grupp[open] summary::before { content: "▾"; }
+  details.grupp summary .antal { margin-left: auto; color: var(--svag); font-weight: 400; }
+  .ikon-ok { color: var(--ok); } .ikon-fel { color: var(--fel); }
+  .filter { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; color: var(--svag); font-size: 14px; }
+  /* Uppslagsbok */
+  .sokruta { display: flex; gap: 10px; align-items: center; padding: 6px 6px 6px 14px; }
+  .sokruta input { flex: 1; border: 0; outline: 0; background: transparent; color: var(--text);
+                   font: inherit; font-size: 17px; padding: 10px 0; }
+  .sokruta kbd { font-size: 12px; color: var(--svag); border: 1px solid var(--linje); border-radius: 4px; padding: 1px 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 6px; }
+  .chip { border: 1px solid var(--linje); background: var(--kort); color: var(--text); border-radius: 99px;
+          padding: 4px 12px; font: inherit; font-size: 13px; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .traffar { color: var(--svag); font-size: 13px; margin: 8px 0 12px; }
+  .post { padding: 14px 16px; margin-bottom: 10px; }
+  .post h3 { margin: 0; font-size: 16px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .post h3 code { font-size: 15px; font-weight: 650; }
+  .kat { font-size: 11px; font-weight: 600; color: var(--accent); background: var(--accent-ljus);
+         border-radius: 99px; padding: 2px 8px; }
+  .post p { margin: 6px 0 0; }
+  .post pre { background: var(--kod); border-radius: 6px; padding: 10px 12px; margin: 10px 0 0; overflow-x: auto; }
+  .post a { font-size: 13px; color: var(--accent); }
+  mark { background: var(--varn-ljus); color: inherit; border-radius: 2px; }
+  .tomt { color: var(--svag); padding: 30px; text-align: center; }
+  footer { color: var(--svag); font-size: 12px; text-align: center; padding: 20px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="inre">
+    <div class="topp">
+      <div>
+        <h1 id="titel">Min progression</h1>
+        <div class="under" id="undertitel"></div>
+      </div>
+      <div class="totalt" id="totalt"></div>
+    </div>
+    <nav role="tablist" id="flikar"></nav>
+  </div>
+</header>
+
+<main class="inre">
+  <section id="flik-oversikt"></section>
+  <section id="flik-tester" hidden></section>
+  <section id="flik-tips" hidden></section>
+  <section id="flik-uppslag" hidden>
+    <div class="kort sokruta">
+      <span aria-hidden="true">🔎</span>
+      <input id="sok" type="search" placeholder="Sök: for, modulo, git revert, CS0103, avrunda …" autocomplete="off" aria-label="Sök i uppslagsboken">
+      <kbd>/</kbd>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="traffar" id="traffar"></div>
+    <div id="resultat"></div>
+  </section>
+</main>
+<footer id="fot"></footer>
+
+<script id="data" type="application/json">/*DATA*/</script>
+<script>
+"use strict";
+const DATA = JSON.parse(document.getElementById("data").textContent);
+
+// ---------------------------------------------------------------- hjälp
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const procent = (ok, tot) => (tot ? Math.round((100 * ok) / tot) : 0);
+
+// ---------------------------------------------------------------- sökning
+function normalisera(text) {
+  return String(text ?? "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+}
+
+function sok(poster, fraga, kategori) {
+  const q = normalisera(fraga).trim();
+  const ord = q.split(/\s+/).filter(Boolean);
+  const traffar = [];
+  for (const p of poster) {
+    if (kategori && p.kategori !== kategori) continue;
+    if (!ord.length) { traffar.push({ p, poang: 0 }); continue; }
+    const namn = normalisera(p.namn), extra = normalisera(p.ord);
+    const text = normalisera(p.forklaring), kod = normalisera(p.exempel);
+    let poang = 0, allaFinns = true;
+    for (const o of ord) {
+      let bast = 0;
+      if (namn === o) bast = 100;
+      else if (namn.startsWith(o)) bast = 60;
+      else if (namn.includes(o)) bast = 40;
+      else if (extra.includes(o)) bast = 25;
+      else if (text.includes(o)) bast = 10;
+      else if (kod.includes(o)) bast = 5;
+      if (!bast) { allaFinns = false; break; }
+      poang += bast;
+    }
+    if (allaFinns) traffar.push({ p, poang });
+  }
+  traffar.sort((a, b) => b.poang - a.poang || a.p.namn.localeCompare(b.p.namn, "sv"));
+  return traffar.map((t) => t.p);
+}
+
+function markera(text, fraga) {
+  let html = esc(text);
+  const ord = fraga.trim().split(/\s+/).filter((o) => o.length > 0);
+  for (const o of ord) {
+    const re = new RegExp("(" + o.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+    html = html.replace(re, "<mark>$1</mark>");
+  }
+  return html;
+}
+
+// ---------------------------------------------------------------- flikar
+const FLIKAR = DATA.progression
+  ? [["oversikt", "Översikt"], ["tester", "Alla tester"], ["tips", "Kodtips"], ["uppslag", "Uppslagsbok"]]
+  : [["uppslag", "Uppslagsbok"]];
+
+function visaFlik(id) {
+  for (const [f] of [["oversikt"], ["tester"], ["tips"], ["uppslag"]]) {
+    $("flik-" + f).hidden = f !== id;
+  }
+  for (const b of $("flikar").children) b.setAttribute("aria-selected", b.dataset.flik === id);
+  if (id === "uppslag") $("sok").focus();
+  try { history.replaceState(null, "", "#" + id); } catch { /* fungerar inte i alla webbläsare för lokala filer */ }
+}
+
+$("flikar").innerHTML = FLIKAR.map(([id, namn]) => `<button role="tab" data-flik="${id}">${namn}</button>`).join("");
+$("flikar").addEventListener("click", (e) => { if (e.target.dataset.flik) visaFlik(e.target.dataset.flik); });
+
+// ---------------------------------------------------------------- progression
+function ritaProgression(d) {
+  $("titel").textContent = `Min progression – ${d.elev}`;
+  $("undertitel").textContent = `Uppdaterad ${d.tid}`;
+  $("totalt").innerHTML = d.byggt
+    ? `<div class="tal">${procent(d.godkanda, d.totalt)} % <small>${d.godkanda} av ${d.totalt} tester</small></div>`
+    : "";
+
+  let html = "";
+  if (!d.byggt) {
+    html += `<div class="kort larm"><b>Koden gick inte att bygga</b>, så inga tester kunde köras.
+      Rätta felen nedan (dubbelklicka på felet i Error List i Visual Studio) och kör dashboarden igen.
+      <pre>${esc(d.byggfel.join("\n"))}</pre></div>`;
+  } else {
+    const nasta = d.tester.find((t) => !t.ok);
+    html += nasta
+      ? `<div class="kort nasta"><div class="rubrik">Nästa steg</div><div class="test">${esc(nasta.namn)}</div>
+         <div class="medd">${esc(nasta.meddelande)}</div></div>`
+      : `<div class="kort nasta"><div class="rubrik">Nästa steg</div><div class="test">🎉 Alla tester är gröna! Fantastiskt jobbat.</div></div>`;
+
+    html += `<h2>Övningar</h2><div class="rutnat">`;
+    for (const o of d.ovningar) {
+      const p = procent(o.godkanda, o.totalt), klar = o.godkanda === o.totalt;
+      html += `<div class="kort ovning"><div class="rad"><span class="nr">${esc(o.nr)}</span>
+        <span class="namn">${esc(o.namn)}</span><span class="antal">${klar ? "🏆 " : ""}${o.godkanda}/${o.totalt}</span></div>
+        <div class="stapel ${klar ? "klar" : ""}"><div style="width:${p}%"></div></div></div>`;
+    }
+    html += `</div>`;
+  }
+
+  if (d.historik.length) {
+    html += `<h2>Utveckling</h2><div class="kort historik">${graf(d.historik)}
+      <table><thead><tr><th>När</th><th>Godkända</th><th>Förändring</th></tr></thead><tbody>`;
+    const h = d.historik;
+    for (let i = h.length - 1; i >= Math.max(0, h.length - 8); i--) {
+      const diff = i > 0 ? h[i].godkanda - h[i - 1].godkanda : 0;
+      html += `<tr><td>${esc(h[i].tid)}</td><td class="tal">${h[i].godkanda}/${h[i].totalt}</td>
+        <td class="tal">${diff > 0 ? "+" + diff : diff < 0 ? diff : "±0"}</td></tr>`;
+    }
+    html += `</tbody></table></div>`;
+  }
+  $("flik-oversikt").innerHTML = html;
+
+  // Alla tester
+  let tester = `<label class="filter"><input type="checkbox" id="baraRoda"> Visa bara tester som inte är gröna</label>`;
+  for (const o of d.ovningar) {
+    const lista = d.tester.filter((t) => t.nr === o.nr);
+    tester += `<details class="kort grupp" ${o.godkanda < o.totalt ? "open" : ""}><summary>${esc(o.nr)} ${esc(o.namn)}
+      <span class="antal">${o.godkanda}/${o.totalt}</span></summary><table><tbody>`;
+    for (const t of lista) {
+      tester += `<tr class="${t.ok ? "gron" : "rod"}"><td>${t.ok ? '<span class="ikon-ok">✔</span>' : '<span class="ikon-fel">✘</span>'}</td>
+        <td>${esc(t.namn)}</td><td>${t.ok ? "" : esc(t.meddelande)}</td></tr>`;
+    }
+    tester += `</tbody></table></details>`;
+  }
+  $("flik-tester").innerHTML = tester;
+  $("baraRoda").addEventListener("change", (e) => {
+    document.querySelectorAll("tr.gron").forEach((r) => (r.hidden = e.target.checked));
+  });
+
+  // Kodtips
+  let tips = `<p>Tipsen påverkar <b>inte</b> rättningen. De hjälper dig att skriva kod som är lätt att läsa.
+    Läs mer i <code>guider/kodstandard.md</code>.</p>`;
+  if (!d.kodtips.length) {
+    tips += `<div class="kort tomt">✨ Inga tips. Din kod följer kodstandarden!</div>`;
+  } else {
+    tips += `<div class="kort"><table><thead><tr><th>Fil</th><th>Rad</th><th>Tips</th><th>Så fixar du</th></tr></thead><tbody>`;
+    for (const t of d.kodtips) {
+      tips += `<tr><td><code>${esc(t.fil)}</code></td><td class="tal">${t.rad}</td>
+        <td>${esc(t.problem)} <code>${esc(t.kod)}</code></td><td>${esc(t.losning)}</td></tr>`;
+    }
+    tips += `</tbody></table></div>`;
+  }
+  $("flik-tips").innerHTML = tips;
+}
+
+function graf(h) {
+  const n = h.length, B = 600, H = 80;
+  if (n < 2) return "";
+  const pkt = h.map((x, i) => [(i / (n - 1)) * B, H - (x.totalt ? (x.godkanda / x.totalt) : 0) * (H - 6) - 3]);
+  const linje = pkt.map((p) => p.map((v) => v.toFixed(1)).join(",")).join(" ");
+  return `<svg viewBox="0 0 ${B} ${H}" preserveAspectRatio="none" aria-label="Andel godkända tester över tid">
+    <polyline points="0,${H} ${linje} ${B},${H}" fill="var(--accent-ljus)" stroke="none"/>
+    <polyline points="${linje}" fill="none" stroke="var(--accent)" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`;
+}
+
+// ---------------------------------------------------------------- uppslagsbok
+let valdKategori = "";
+function ritaUppslag() {
+  const fraga = $("sok").value;
+  const lista = sok(DATA.uppslag.poster, fraga, valdKategori);
+  $("traffar").textContent = `${lista.length} av ${DATA.uppslag.poster.length} uppslag`;
+  $("resultat").innerHTML = lista.length
+    ? lista.map((p) => `<article class="kort post"><h3><code>${markera(p.namn, fraga)}</code>
+        <span class="kat">${esc(p.kategori)}</span></h3><p>${esc(p.forklaring)}</p>
+        ${p.exempel ? `<pre><code>${esc(p.exempel)}</code></pre>` : ""}
+        ${p.guide ? `<p><a href="${esc(DATA.guideprefix + p.guide)}">Läs mer i guiden →</a></p>` : ""}</article>`).join("")
+    : `<div class="kort tomt">Inga träffar. Prova ett annat ord, till exempel på svenska.</div>`;
+}
+$("chips").innerHTML = ["", ...DATA.uppslag.kategorier]
+  .map((k) => `<button class="chip" data-kat="${esc(k)}" aria-pressed="${k === ""}">${k || "Alla"}</button>`).join("");
+$("chips").addEventListener("click", (e) => {
+  if (e.target.dataset.kat === undefined) return;
+  valdKategori = e.target.dataset.kat;
+  for (const c of $("chips").children) c.setAttribute("aria-pressed", c.dataset.kat === valdKategori);
+  ritaUppslag();
+});
+$("sok").addEventListener("input", ritaUppslag);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "/" && document.activeElement !== $("sok")) { e.preventDefault(); visaFlik("uppslag"); }
+});
+
+// ---------------------------------------------------------------- start
+if (DATA.progression) {
+  ritaProgression(DATA.progression);
+  $("fot").textContent = "Skapad på din dator. Kör dashboard.cmd igen för att uppdatera.";
+} else {
+  $("titel").textContent = "Uppslagsbok – Lär dig C# med Oskar";
+  $("undertitel").textContent = "C#, Git, dotnet och Visual Studio, förklarat på svenska";
+  $("fot").textContent = "Fungerar utan internet.";
+}
+ritaUppslag();
+const start = location.hash.slice(1);
+visaFlik(FLIKAR.some(([f]) => f === start) ? start : FLIKAR[0][0]);
+</script>
+</body>
+</html>

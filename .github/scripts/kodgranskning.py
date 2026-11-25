@@ -54,7 +54,7 @@ BORTKOMMENTERAD = re.compile(r"^\s*//(?!/)\s*.*(;|\{|\})\s*$")
 
 def ar_larar_eller_test(sokvag):
     delar = sokvag.replace("\\", "/").split("/")
-    return any(d.endswith(".Tests") or d in ("Konfliktlabb", "bin", "obj", ".github", "labb") for d in delar)
+    return any(d.endswith(".Tests") or d in ("Konfliktlabb", "Historiklabb", "verktyg", "min-dashboard", "bin", "obj", ".github", "labb") for d in delar)
 
 
 def projekt_for(fil):
@@ -77,7 +77,7 @@ def ar_bibliotek(fil):
 
 def elevfiler(rot):
     for mapp, undermappar, filer in os.walk(rot):
-        undermappar[:] = [u for u in undermappar if not u.startswith(".") and u not in ("bin", "obj", "labb")]
+        undermappar[:] = [u for u in undermappar if not u.startswith(".") and u not in ("bin", "obj", "labb", "min-dashboard")]
         for fil in filer:
             sokvag = os.path.join(mapp, fil)
             if fil.endswith(".cs") and not ar_larar_eller_test(os.path.relpath(sokvag, rot)):

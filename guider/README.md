@@ -3,6 +3,9 @@
 Läs guiderna i ordning första gången (de fem första innan du börjar). Sedan fungerar de som uppslagsbok,
 både under övningarna och när du arbetar på egen hand.
 
+> 🔎 **Snabbt uppslag:** öppna [`uppslagsbok.html`](../uppslagsbok.html) i repomappen (eller fliken
+> *Uppslagsbok* på din dashboard) och sök på C#-ord, metoder, felmeddelanden och kommandon.
+
 ## Börja här
 
 | Nr | Guide | Handlar om |
@@ -36,6 +39,7 @@ både under övningarna och när du arbetar på egen hand.
 |---|---|---|---|
 | 13 | [Merge-konflikter](merge-konflikter.md) | Varför konflikter uppstår, markeringarna, lösa i fem steg, avbryta | 05 |
 | 14 | [Versionering](versionering.md) | SemVer, vad som bryter ett API, ändringslogg, git-taggar | 06 |
+| 15 | [Ändra och ångra historik](andra-historik.md) | amend, revert, rebase -i, cherry-pick, reset, bisect, reflog | 07 |
 
 ## "Prova själv"
 

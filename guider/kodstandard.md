@@ -22,7 +22,7 @@ Du behöver inte komma ihåg alla regler. Datorn säger till:
 | **Visual Studio** | Gröna eller gula vågstreck under koden. I **Error List** under fliken **Warnings** (efter bygge) |
 | **VS Code** | Vågstreck under koden, och i panelen **Problems** (Ctrl+Shift+M) |
 | **GitHub Actions** | Avsnittet **💡 Tips om kodstil** i sammanfattningen, och små notiser direkt i koden |
-| **Din dashboard** | Antal tips och vilka sorter |
+| **Din dashboard** (`dashboard.cmd`) | Fliken **Kodtips**, med förklaring och hur du rättar |
 
 > **Tipsen påverkar inte rättningen.** Ett test blir aldrig rött på grund
 > av kodstil. Men det är bra att träna på att skriva snygg kod från början.

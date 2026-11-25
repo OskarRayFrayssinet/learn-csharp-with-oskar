@@ -4,18 +4,11 @@ name: Autorättning
 # I lärarens original hoppas den över, så att originalet inte visar rött kryss
 # (där är ju uppgifterna inte lösta). Läraren kan ändå starta den manuellt
 # under fliken Actions -> Autorättning -> Run workflow.
-#
-# Grenen 'dashboard' skrivs av den här workflowen och ignoreras, så att
-# den inte startar sig själv.
 on:
   push:
-    branches-ignore:
-      - dashboard
+    branches:
+      - '**'   # alla grenar, men inte taggar
   workflow_dispatch:
-
-# Behövs för att kunna skriva elevens dashboard till grenen 'dashboard'.
-permissions:
-  contents: write
 
 jobs:
   testa:
@@ -48,10 +41,3 @@ jobs:
       - name: Kodgranskning (tips, påverkar inte rättningen)
         if: always()
         run: python3 .github/scripts/kodgranskning.py testlogg.txt kodtips.json
-
-      - name: Uppdatera min dashboard
-        if: always() && github.event.repository.fork
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: bash .github/scripts/dashboard.sh

@@ -102,9 +102,9 @@ git add .
 git commit -m "Uppgift 1–4 i övning 01"
 git push
 ```
-Öppna sedan din **dashboard** (länken *Min progression* överst i README-filen
-i din fork). Efter ungefär en minut visar den dina nya resultat, vad du ska
-göra härnäst och tips om din kod.
+Gå sedan till din fork på GitHub och öppna fliken **Actions** för att se
+rättningen. Du kan också när som helst dubbelklicka på **`dashboard.cmd`**
+för att se din progression på din egen dator, även utan internet.
 
 > **Pusha alltid innan du går.** Det du inte har pushat finns bara på
 > datorn. Läraren kan inte se det, och det rättas inte.
@@ -134,7 +134,8 @@ kan hämtas utan konflikter.
 | …skriva min kod | Filen som README:n pekar på, t.ex. `Grunder/Grunder.cs` |
 | …prova min kod med egna värden | Övningens `Provkor`-projekt |
 | …se om mina tester är gröna | **Test Explorer** i Visual Studio |
-| …se hur långt jag har kommit | Min **dashboard**: grenen `dashboard` i min fork (länk överst i README) |
+| …se hur långt jag har kommit | Dubbelklicka på **`dashboard.cmd`** (fungerar offline) |
+| …slå upp ett C#-ord, ett kommando eller ett felmeddelande | **`uppslagsbok.html`**, eller fliken Uppslagsbok på dashboarden |
 | …se min rättning i detalj | Fliken **Actions** i min fork på GitHub |
 | …få tips om min kodstil | Vågstrecken i editorn, och dashboarden. Se [Kodstandard](kodstandard.md) |
 | …hitta rätt i Visual Studio eller VS Code | [Visual Studio och VS Code](visual-studio-och-vscode.md) |

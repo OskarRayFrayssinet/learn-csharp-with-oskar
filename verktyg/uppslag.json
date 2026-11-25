@@ -1,0 +1,1089 @@
+{
+ "kategorier": [
+  "Nyckelord",
+  "Datatyper",
+  "Operatorer",
+  "Text",
+  "Arrayer och listor",
+  "Metoder",
+  "Begrepp",
+  "Felmeddelanden",
+  "Git",
+  "dotnet",
+  "Visual Studio"
+ ],
+ "poster": [
+  {
+   "namn": "if / else if / else",
+   "kategori": "Nyckelord",
+   "forklaring": "Kör kod bara om ett villkor är sant. Villkoren testas uppifrån och ned, och bara det första som stämmer körs.",
+   "exempel": "if (poang >= 90)\n{\n    betyg = \"A\";\n}\nelse if (poang >= 50)\n{\n    betyg = \"E\";\n}\nelse\n{\n    betyg = \"F\";\n}",
+   "ord": "villkor om annars",
+   "guide": "guider/villkor-och-loopar.md#villkor-if-else-if-else"
+  },
+  {
+   "namn": "switch",
+   "kategori": "Nyckelord",
+   "forklaring": "Väljer bland många fasta värden. Ofta tydligare än många else if.",
+   "exempel": "switch (dag)\n{\n    case 1:\n        return \"måndag\";\n    case 2:\n        return \"tisdag\";\n    default:\n        return \"ogiltig\";\n}",
+   "ord": "case default välja",
+   "guide": "guider/villkor-och-loopar.md#switch-välja-bland-många-fasta-värden"
+  },
+  {
+   "namn": "for",
+   "kategori": "Nyckelord",
+   "forklaring": "Loop när du vet hur många varv det ska bli. Har start, villkor och steg.",
+   "exempel": "for (int i = 1; i <= 5; i++)\n{\n    Console.WriteLine(i);   // 1 2 3 4 5\n}",
+   "ord": "loop slinga upprepa räknare",
+   "guide": "guider/villkor-och-loopar.md#for-när-du-vet-hur-många-varv"
+  },
+  {
+   "namn": "foreach",
+   "kategori": "Nyckelord",
+   "forklaring": "Går igenom varje sak i en array, lista eller sträng.",
+   "exempel": "foreach (int tal in minaTal)\n{\n    summa += tal;\n}",
+   "ord": "loop gå igenom varje",
+   "guide": "guider/villkor-och-loopar.md#foreach-gå-igenom-alla-saker-i-en-array-eller-lista"
+  },
+  {
+   "namn": "while",
+   "kategori": "Nyckelord",
+   "forklaring": "Loop som fortsätter så länge villkoret är sant. Bra när du inte vet antalet varv i förväg.",
+   "exempel": "while (tal > 0)\n{\n    tal = tal / 10;\n    antal++;\n}",
+   "ord": "loop medan",
+   "guide": "guider/villkor-och-loopar.md#while-när-du-inte-vet-hur-många-varv"
+  },
+  {
+   "namn": "do while",
+   "kategori": "Nyckelord",
+   "forklaring": "Som while, men kroppen körs alltid minst en gång eftersom villkoret testas sist.",
+   "exempel": "do\n{\n    svar = Console.ReadLine();\n}\nwhile (svar != \"ja\");",
+   "ord": "loop minst en gång",
+   "guide": ""
+  },
+  {
+   "namn": "break",
+   "kategori": "Nyckelord",
+   "forklaring": "Hoppar ut ur loopen (eller switch) direkt.",
+   "exempel": "foreach (int t in tal)\n{\n    if (t == sokt)\n    {\n        break;\n    }\n}",
+   "ord": "avbryta loop sluta",
+   "guide": ""
+  },
+  {
+   "namn": "continue",
+   "kategori": "Nyckelord",
+   "forklaring": "Hoppar över resten av varvet och går till nästa varv i loopen.",
+   "exempel": "for (int i = 1; i <= 10; i++)\n{\n    if (i % 2 == 0)\n    {\n        continue;   // hoppa över jämna tal\n    }\n    Console.WriteLine(i);\n}",
+   "ord": "hoppa över nästa varv",
+   "guide": ""
+  },
+  {
+   "namn": "return",
+   "kategori": "Nyckelord",
+   "forklaring": "Skickar tillbaka ett värde från en metod och avslutar metoden direkt.",
+   "exempel": "public static int Dubbla(int tal)\n{\n    return tal * 2;\n}",
+   "ord": "returnera svar returvärde",
+   "guide": "guider/metoder.md"
+  },
+  {
+   "namn": "void",
+   "kategori": "Nyckelord",
+   "forklaring": "Returtyp för metoder som inte skickar tillbaka något värde.",
+   "exempel": "public static void SagHej(string namn)\n{\n    Console.WriteLine($\"Hej {namn}!\");\n}",
+   "ord": "ingen returtyp inget värde",
+   "guide": "guider/metoder.md#metoder-som-inte-returnerar-något-void"
+  },
+  {
+   "namn": "static",
+   "kategori": "Nyckelord",
+   "forklaring": "Metoden hör till klassen själv och anropas med klassnamnet, utan att skapa ett objekt. Alla metoder i övningarna är static.",
+   "exempel": "public static class Rakna\n{\n    public static int Dubbla(int tal) => tal * 2;\n}\n\nint svar = Rakna.Dubbla(4);",
+   "ord": "statisk",
+   "guide": "guider/metoder.md"
+  },
+  {
+   "namn": "public / private",
+   "kategori": "Nyckelord",
+   "forklaring": "Bestämmer vem som får använda klassen eller metoden. public = alla, även andra projekt och testerna. private = bara koden i samma klass.",
+   "exempel": "public static int Synlig() => 1;\nprivate static int Hemlig() => 2;",
+   "ord": "synlighet åtkomst access modifier",
+   "guide": ""
+  },
+  {
+   "namn": "class",
+   "kategori": "Nyckelord",
+   "forklaring": "En klass samlar metoder (och data) som hör ihop. All kod i C# ligger i klasser.",
+   "exempel": "public static class Kalkylator\n{\n    public static int Addera(int a, int b) => a + b;\n}",
+   "ord": "klass",
+   "guide": "guider/filstruktur.md"
+  },
+  {
+   "namn": "namespace",
+   "kategori": "Nyckelord",
+   "forklaring": "Ett efternamn för klasser, som håller isär klasser som heter likadant. Står överst i filen.",
+   "exempel": "namespace Grunder;\n\npublic static class Ovningar { }",
+   "ord": "namnrymd",
+   "guide": "guider/filstruktur.md#namespace-och-using"
+  },
+  {
+   "namn": "using",
+   "kategori": "Nyckelord",
+   "forklaring": "Gör klasserna i ett annat namespace tillgängliga i filen. Skrivs högst upp.",
+   "exempel": "using Verktyg;\n\nConsole.WriteLine(Halsning.Skapa(\"klassen\"));",
+   "ord": "importera namespace",
+   "guide": "guider/filstruktur.md#namespace-och-using"
+  },
+  {
+   "namn": "new",
+   "kategori": "Nyckelord",
+   "forklaring": "Skapar något nytt, till exempel en array, en lista eller ett objekt.",
+   "exempel": "int[] tal = new int[5];\nList<string> namn = new List<string>();",
+   "ord": "skapa ny",
+   "guide": ""
+  },
+  {
+   "namn": "var",
+   "kategori": "Nyckelord",
+   "forklaring": "Låter kompilatorn räkna ut typen. Typen bestäms ändå en gång för alla.",
+   "exempel": "var antal = 42;          // blir int\nvar namn = \"Sara\";       // blir string",
+   "ord": "typinferens",
+   "guide": "guider/variabler-och-datatyper.md#var-låt-datorn-räkna-ut-typen"
+  },
+  {
+   "namn": "const",
+   "kategori": "Nyckelord",
+   "forklaring": "Ett värde som aldrig kan ändras. Namnet skrivs med PascalCase.",
+   "exempel": "const int MaxAntal = 10;\nconst double Moms = 0.25;",
+   "ord": "konstant",
+   "guide": ""
+  },
+  {
+   "namn": "true / false",
+   "kategori": "Nyckelord",
+   "forklaring": "De två värden som en bool kan ha.",
+   "exempel": "bool klar = true;",
+   "ord": "sant falskt",
+   "guide": ""
+  },
+  {
+   "namn": "null",
+   "kategori": "Nyckelord",
+   "forklaring": "Betyder \"inget värde\". En variabel som är null pekar inte på något, och används den blir det NullReferenceException.",
+   "exempel": "string? namn = null;\nif (namn != null)\n{\n    Console.WriteLine(namn.Length);\n}",
+   "ord": "ingenting tom",
+   "guide": ""
+  },
+  {
+   "namn": "try / catch",
+   "kategori": "Nyckelord",
+   "forklaring": "Fångar ett fel (exception) så att programmet inte kraschar.",
+   "exempel": "try\n{\n    int tal = int.Parse(text);\n}\ncatch (FormatException)\n{\n    Console.WriteLine(\"Det där var inget tal.\");\n}",
+   "ord": "felhantering exception fånga",
+   "guide": ""
+  },
+  {
+   "namn": "throw",
+   "kategori": "Nyckelord",
+   "forklaring": "Kastar ett fel (exception). Uppgifterna börjar med throw new NotImplementedException();",
+   "exempel": "throw new NotImplementedException();\nthrow new ArgumentException(\"Talet får inte vara negativt\");",
+   "ord": "kasta fel",
+   "guide": ""
+  },
+  {
+   "namn": "int",
+   "kategori": "Datatyper",
+   "forklaring": "Heltal, från ungefär −2,1 till +2,1 miljarder.",
+   "exempel": "int antal = 42;\nint stort = int.MaxValue;   // 2147483647",
+   "ord": "heltal integer",
+   "guide": "guider/variabler-och-datatyper.md#de-vanligaste-datatyperna"
+  },
+  {
+   "namn": "double",
+   "kategori": "Datatyper",
+   "forklaring": "Decimaltal. Skriv punkt i koden: 3.5. Delning med heltal ger heltal, så gör om till double först.",
+   "exempel": "double pris = 19.90;\ndouble medel = (double)summa / antal;",
+   "ord": "decimaltal flyttal komma",
+   "guide": "guider/variabler-och-datatyper.md#de-vanligaste-datatyperna"
+  },
+  {
+   "namn": "decimal",
+   "kategori": "Datatyper",
+   "forklaring": "Exakt decimaltal, bra för pengar. Skrivs med m på slutet.",
+   "exempel": "decimal pris = 19.90m;",
+   "ord": "pengar exakt",
+   "guide": ""
+  },
+  {
+   "namn": "bool",
+   "kategori": "Datatyper",
+   "forklaring": "Sant eller falskt: true eller false. Används i villkor.",
+   "exempel": "bool arMyndig = alder >= 18;",
+   "ord": "boolean sant falskt",
+   "guide": "guider/variabler-och-datatyper.md#de-vanligaste-datatyperna"
+  },
+  {
+   "namn": "string",
+   "kategori": "Datatyper",
+   "forklaring": "Text inom dubbla citattecken.",
+   "exempel": "string namn = \"Sara\";\nint langd = namn.Length;",
+   "ord": "text sträng",
+   "guide": "guider/variabler-och-datatyper.md#arbeta-med-text"
+  },
+  {
+   "namn": "char",
+   "kategori": "Datatyper",
+   "forklaring": "Ett enda tecken inom enkla citattecken. En string består av char.",
+   "exempel": "char bokstav = 'A';\nchar forsta = namn[0];",
+   "ord": "tecken bokstav",
+   "guide": "guider/variabler-och-datatyper.md#arbeta-med-text"
+  },
+  {
+   "namn": "Typomvandling (cast)",
+   "kategori": "Datatyper",
+   "forklaring": "Gör om ett värde till en annan typ. (int) klipper bort decimalerna.",
+   "exempel": "double d = 3.9;\nint i = (int)d;            // 3\ndouble x = (double)7 / 2;  // 3.5",
+   "ord": "konvertera omvandla cast",
+   "guide": "guider/variabler-och-datatyper.md#byta-mellan-typer"
+  },
+  {
+   "namn": "int.Parse",
+   "kategori": "Datatyper",
+   "forklaring": "Gör om text till ett heltal. Ger FormatException om texten inte är ett tal.",
+   "exempel": "int tal = int.Parse(\"42\");",
+   "ord": "text till tal konvertera",
+   "guide": "guider/variabler-och-datatyper.md#byta-mellan-typer"
+  },
+  {
+   "namn": "int.TryParse",
+   "kategori": "Datatyper",
+   "forklaring": "Försöker göra om text till tal utan att krascha. Returnerar true om det gick.",
+   "exempel": "if (int.TryParse(text, out int tal))\n{\n    Console.WriteLine(tal * 2);\n}",
+   "ord": "säkert text till tal",
+   "guide": ""
+  },
+  {
+   "namn": "ToString",
+   "kategori": "Datatyper",
+   "forklaring": "Gör om ett värde till text.",
+   "exempel": "string text = 42.ToString();   // \"42\" ",
+   "ord": "till text",
+   "guide": ""
+  },
+  {
+   "namn": "+ - * /",
+   "kategori": "Operatorer",
+   "forklaring": "Räknesätten. OBS: 7 / 2 blir 3 när båda är int (heltalsdivision).",
+   "exempel": "int a = 7 / 2;        // 3\ndouble b = 7.0 / 2;   // 3.5",
+   "ord": "plus minus gånger delat räkna",
+   "guide": "guider/variabler-och-datatyper.md#räkna-med-variabler"
+  },
+  {
+   "namn": "% (modulo)",
+   "kategori": "Operatorer",
+   "forklaring": "Resten vid division. Bra för att kolla jämna tal och delbarhet.",
+   "exempel": "int rest = 17 % 5;          // 2\nbool jamnt = tal % 2 == 0;",
+   "ord": "rest modulus delbar jämnt udda",
+   "guide": "guider/variabler-och-datatyper.md#räkna-med-variabler"
+  },
+  {
+   "namn": "== och !=",
+   "kategori": "Operatorer",
+   "forklaring": "Är lika med / är inte lika med. Ger en bool. Förväxla inte med = som tilldelar.",
+   "exempel": "if (svar == 42) { }\nif (namn != \"\") { }",
+   "ord": "lika jämföra",
+   "guide": "guider/villkor-och-loopar.md#jämförelser"
+  },
+  {
+   "namn": "< > <= >=",
+   "kategori": "Operatorer",
+   "forklaring": "Mindre än, större än, mindre än eller lika med, större än eller lika med.",
+   "exempel": "if (alder >= 18) { }",
+   "ord": "jämföra större mindre",
+   "guide": "guider/villkor-och-loopar.md#jämförelser"
+  },
+  {
+   "namn": "&& || !",
+   "kategori": "Operatorer",
+   "forklaring": "Och, eller, inte. Kombinerar villkor.",
+   "exempel": "if (alder >= 13 && alder <= 19) { }   // tonåring\nif (dag == 6 || dag == 7) { }         // helg\nif (!klar) { }                         // inte klar",
+   "ord": "och eller inte logik",
+   "guide": "guider/villkor-och-loopar.md#kombinera-villkor"
+  },
+  {
+   "namn": "++ och --",
+   "kategori": "Operatorer",
+   "forklaring": "Ökar eller minskar en variabel med 1.",
+   "exempel": "antal++;   // samma som antal = antal + 1\ni--;",
+   "ord": "öka minska plus plus",
+   "guide": ""
+  },
+  {
+   "namn": "+= -= *=",
+   "kategori": "Operatorer",
+   "forklaring": "Kortform för att ändra en variabel utifrån sitt eget värde.",
+   "exempel": "summa += tal;      // summa = summa + tal\ntext += \"!\";",
+   "ord": "lägg till kortform",
+   "guide": "guider/variabler-och-datatyper.md#kortformer"
+  },
+  {
+   "namn": "? : (villkorsoperatorn)",
+   "kategori": "Operatorer",
+   "forklaring": "Kort if/else som ger ett värde.",
+   "exempel": "string text = poang >= 50 ? \"Godkänd\" : \"Inte godkänd\";",
+   "ord": "ternary kort if",
+   "guide": ""
+  },
+  {
+   "namn": "=> (lambda / kort metod)",
+   "kategori": "Operatorer",
+   "forklaring": "Används för korta metoder med bara en rad, och för lambdauttryck.",
+   "exempel": "public static int Dubbla(int tal) => tal * 2;",
+   "ord": "pil expression bodied",
+   "guide": ""
+  },
+  {
+   "namn": "$\"...\" (stränginterpolering)",
+   "kategori": "Text",
+   "forklaring": "Sätt ihop text och variabler. Variablerna skrivs inom { }.",
+   "exempel": "string namn = \"Ali\";\nint alder = 16;\nstring text = $\"{namn} är {alder} år.\";",
+   "ord": "interpolation sätta ihop text",
+   "guide": "guider/variabler-och-datatyper.md#text-och-värden-tillsammans"
+  },
+  {
+   "namn": "Length (text)",
+   "kategori": "Text",
+   "forklaring": "Antal tecken i en sträng.",
+   "exempel": "\"hej\".Length   // 3",
+   "ord": "längd antal tecken",
+   "guide": "guider/variabler-och-datatyper.md#arbeta-med-text"
+  },
+  {
+   "namn": "text[i]",
+   "kategori": "Text",
+   "forklaring": "Hämtar tecknet på plats i. Första tecknet har index 0.",
+   "exempel": "string ord = \"Hej\";\nchar forsta = ord[0];               // 'H'\nchar sista = ord[ord.Length - 1];   // 'j'",
+   "ord": "index tecken",
+   "guide": "guider/variabler-och-datatyper.md#arbeta-med-text"
+  },
+  {
+   "namn": "ToUpper / ToLower",
+   "kategori": "Text",
+   "forklaring": "Gör om till stora eller små bokstäver.",
+   "exempel": "\"Hej\".ToUpper()   // \"HEJ\"",
+   "ord": "versaler gemener stora små bokstäver",
+   "guide": ""
+  },
+  {
+   "namn": "Contains",
+   "kategori": "Text",
+   "forklaring": "Kollar om en text innehåller en annan text.",
+   "exempel": "\"banan\".Contains(\"nan\")   // true",
+   "ord": "innehåller söka",
+   "guide": ""
+  },
+  {
+   "namn": "Replace",
+   "kategori": "Text",
+   "forklaring": "Byter ut text mot annan text.",
+   "exempel": "\"hej då\".Replace(\"då\", \"igen\")   // \"hej igen\"",
+   "ord": "byta ersätta",
+   "guide": ""
+  },
+  {
+   "namn": "Split",
+   "kategori": "Text",
+   "forklaring": "Delar upp en text i en array.",
+   "exempel": "string[] ord = \"äpple,päron,kiwi\".Split(',');",
+   "ord": "dela upp",
+   "guide": ""
+  },
+  {
+   "namn": "Substring",
+   "kategori": "Text",
+   "forklaring": "Plockar ut en del av en text: från index och ett antal tecken.",
+   "exempel": "\"programmering\".Substring(0, 7)   // \"program\"",
+   "ord": "del av text",
+   "guide": ""
+  },
+  {
+   "namn": "Trim",
+   "kategori": "Text",
+   "forklaring": "Tar bort mellanslag i början och slutet.",
+   "exempel": "\"  hej  \".Trim()   // \"hej\"",
+   "ord": "ta bort mellanslag",
+   "guide": ""
+  },
+  {
+   "namn": "string.Join",
+   "kategori": "Text",
+   "forklaring": "Sätter ihop en array eller lista till en text, med en avgränsare.",
+   "exempel": "int[] tal = { 1, 2, 3 };\nstring text = string.Join(\", \", tal);   // \"1, 2, 3\" ",
+   "ord": "sätta ihop lista",
+   "guide": ""
+  },
+  {
+   "namn": "Console.WriteLine",
+   "kategori": "Text",
+   "forklaring": "Skriver ut en rad i konsolfönstret. Använd i Provkör, inte i klassbiblioteken.",
+   "exempel": "Console.WriteLine(\"Hej!\");\nConsole.WriteLine($\"Summan är {summa}\");",
+   "ord": "skriv ut utskrift print cw",
+   "guide": "guider/testkora.md"
+  },
+  {
+   "namn": "Console.ReadLine",
+   "kategori": "Text",
+   "forklaring": "Läser en rad som användaren skriver in.",
+   "exempel": "Console.Write(\"Vad heter du? \");\nstring? namn = Console.ReadLine();",
+   "ord": "läsa in input",
+   "guide": ""
+  },
+  {
+   "namn": "int[] (array)",
+   "kategori": "Arrayer och listor",
+   "forklaring": "En rad med värden av samma typ och fast längd. Index börjar på 0.",
+   "exempel": "int[] tal = { 4, 9, 2 };\nint[] tomma = new int[10];\nint forsta = tal[0];",
+   "ord": "array fält vektor",
+   "guide": "guider/villkor-och-loopar.md#arrayer"
+  },
+  {
+   "namn": "Length (array)",
+   "kategori": "Arrayer och listor",
+   "forklaring": "Antal platser i en array. Sista index är Length - 1.",
+   "exempel": "for (int i = 0; i < tal.Length; i++)\n{\n    Console.WriteLine(tal[i]);\n}",
+   "ord": "längd antal",
+   "guide": "guider/villkor-och-loopar.md#arrayer"
+  },
+  {
+   "namn": "List<T>",
+   "kategori": "Arrayer och listor",
+   "forklaring": "En lista som kan växa och krympa. T är typen, t.ex. List<int>.",
+   "exempel": "List<int> tal = new List<int> { 5, 3 };\ntal.Add(8);\nint antal = tal.Count;   // 3",
+   "ord": "lista list",
+   "guide": ""
+  },
+  {
+   "namn": "Add / Remove",
+   "kategori": "Arrayer och listor",
+   "forklaring": "Lägger till eller tar bort i en lista.",
+   "exempel": "lista.Add(7);\nlista.Remove(7);\nlista.RemoveAt(0);   // ta bort på index 0",
+   "ord": "lägg till ta bort",
+   "guide": ""
+  },
+  {
+   "namn": "Count (lista)",
+   "kategori": "Arrayer och listor",
+   "forklaring": "Antal saker i en List. (Arrayer använder Length.)",
+   "exempel": "int antal = lista.Count;",
+   "ord": "antal storlek",
+   "guide": ""
+  },
+  {
+   "namn": "Kopiera en lista",
+   "kategori": "Arrayer och listor",
+   "forklaring": "Skapa en ny lista med samma innehåll, så att originalet inte ändras.",
+   "exempel": "var kopia = new List<int>(lista);",
+   "ord": "kopia ny lista",
+   "guide": ""
+  },
+  {
+   "namn": "Metod",
+   "kategori": "Metoder",
+   "forklaring": "En namngiven bit kod som gör en sak. Har returtyp, namn, parametrar och kropp.",
+   "exempel": "public static int Kvadrat(int tal)\n{\n    return tal * tal;\n}",
+   "ord": "funktion method",
+   "guide": "guider/metoder.md"
+  },
+  {
+   "namn": "Parameter och argument",
+   "kategori": "Metoder",
+   "forklaring": "Parametern är namnet i metoden (tal). Argumentet är värdet du skickar in (5).",
+   "exempel": "public static int Kvadrat(int tal) { ... }   // tal är en parameter\nKvadrat(5);                                  // 5 är ett argument",
+   "ord": "inparameter värde",
+   "guide": "guider/metoder.md#anropa-en-metod"
+  },
+  {
+   "namn": "Anropa en metod",
+   "kategori": "Metoder",
+   "forklaring": "Skriv klassnamn, punkt, metodnamn och argument inom parentes.",
+   "exempel": "int storst = Ovningar.StorstAvTva(3, 8);",
+   "ord": "anrop köra metod",
+   "guide": "guider/metoder.md#anropa-en-metod"
+  },
+  {
+   "namn": "Överlagring (overload)",
+   "kategori": "Metoder",
+   "forklaring": "Flera metoder med samma namn men olika parametrar.",
+   "exempel": "public static double MedMoms(double pris) { ... }\npublic static double MedMoms(double pris, double procent) { ... }",
+   "ord": "overload samma namn",
+   "guide": "guider/versionering.md"
+  },
+  {
+   "namn": "Math.Round",
+   "kategori": "Metoder",
+   "forklaring": "Avrundar. Obs: Math.Round(2.5) ger 2 (till jämnt tal). Använd MidpointRounding.AwayFromZero för vanlig avrundning.",
+   "exempel": "Math.Round(2.567, 2)                            // 2.57\nMath.Round(2.5, MidpointRounding.AwayFromZero)  // 3",
+   "ord": "avrunda",
+   "guide": ""
+  },
+  {
+   "namn": "Math.Max / Math.Min",
+   "kategori": "Metoder",
+   "forklaring": "Ger det största eller minsta av två tal. (I vissa övningar ska du göra det själv med if.)",
+   "exempel": "int storst = Math.Max(3, 8);   // 8",
+   "ord": "största minsta",
+   "guide": ""
+  },
+  {
+   "namn": "Math.Abs",
+   "kategori": "Metoder",
+   "forklaring": "Absolutbelopp: tar bort minustecknet.",
+   "exempel": "Math.Abs(-5)   // 5",
+   "ord": "absolutbelopp",
+   "guide": ""
+  },
+  {
+   "namn": "Math.Pow / Math.Sqrt",
+   "kategori": "Metoder",
+   "forklaring": "Upphöjt till och kvadratrot. Ger double.",
+   "exempel": "Math.Pow(2, 10)   // 1024\nMath.Sqrt(16)     // 4",
+   "ord": "potens roten ur",
+   "guide": ""
+  },
+  {
+   "namn": "Random",
+   "kategori": "Metoder",
+   "forklaring": "Slumptal. Next(1, 7) ger 1–6.",
+   "exempel": "var slump = new Random();\nint tarning = slump.Next(1, 7);",
+   "ord": "slump slumptal",
+   "guide": ""
+  },
+  {
+   "namn": "Variabel",
+   "kategori": "Begrepp",
+   "forklaring": "En namngiven låda som håller ett värde av en viss typ.",
+   "exempel": "int alder = 16;",
+   "ord": "låda värde",
+   "guide": "guider/variabler-och-datatyper.md#vad-är-en-variabel"
+  },
+  {
+   "namn": "Index",
+   "kategori": "Begrepp",
+   "forklaring": "Platsnumret i en array eller sträng. Börjar på 0.",
+   "exempel": "tal[0]   // första",
+   "ord": "plats position nummer",
+   "guide": "guider/villkor-och-loopar.md#arrayer"
+  },
+  {
+   "namn": "Startpunkt (Main / top-level)",
+   "kategori": "Begrepp",
+   "forklaring": "Där ett program börjar. Antingen en Main-metod eller kod direkt i Program.cs. Bara en per program.",
+   "exempel": "// Program.cs\nConsole.WriteLine(\"Programmet börjar här\");",
+   "ord": "main program.cs start",
+   "guide": "guider/filstruktur.md#startpunkten-var-programmet-börjar"
+  },
+  {
+   "namn": "Klassbibliotek",
+   "kategori": "Begrepp",
+   "forklaring": "Ett projekt med klasser som andra använder. Kan inte startas med ▶.",
+   "exempel": "",
+   "ord": "class library dll library",
+   "guide": "guider/filstruktur.md#körbart-program-eller-bibliotek"
+  },
+  {
+   "namn": "Solution (.sln)",
+   "kategori": "Begrepp",
+   "forklaring": "En lista över projekt som hör ihop. Det är den du öppnar i Visual Studio.",
+   "exempel": "",
+   "ord": "sln slnx",
+   "guide": "guider/filstruktur.md"
+  },
+  {
+   "namn": "Projekt (.csproj)",
+   "kategori": "Begrepp",
+   "forklaring": "Inställningar för ett projekt: .NET-version, program eller bibliotek, referenser.",
+   "exempel": "",
+   "ord": "csproj projektfil",
+   "guide": "guider/filstruktur.md"
+  },
+  {
+   "namn": "ProjectReference",
+   "kategori": "Begrepp",
+   "forklaring": "Låter ett projekt använda klasser från ett annat projekt.",
+   "exempel": "<ProjectReference Include=\"..\\Grunder\\Grunder.csproj\" />",
+   "ord": "referens",
+   "guide": "guider/filstruktur.md#referenser-hur-projekt-använder-varandra"
+  },
+  {
+   "namn": "bin och obj",
+   "kategori": "Begrepp",
+   "forklaring": "Mappar som skapas när du bygger. Ska inte pushas.",
+   "exempel": "",
+   "ord": "byggmapp",
+   "guide": "guider/filstruktur.md#bin-och-obj-det-som-skapas-när-du-bygger"
+  },
+  {
+   "namn": "Test",
+   "kategori": "Begrepp",
+   "forklaring": "Kod som anropar din kod och kontrollerar svaret.",
+   "exempel": "Assert.Equal(8, Ovningar.StorstAvTva(3, 8));",
+   "ord": "assert xunit",
+   "guide": "guider/tester-och-autorattning.md"
+  },
+  {
+   "namn": "Debugger och brytpunkt",
+   "kategori": "Begrepp",
+   "forklaring": "Pausa programmet på en rad (F9) och titta på variablerna. Stega med F10.",
+   "exempel": "",
+   "ord": "breakpoint debugga stega",
+   "guide": "guider/testkora.md#3-debuggern-stega-igenom-koden"
+  },
+  {
+   "namn": "Kompileringsfel",
+   "kategori": "Begrepp",
+   "forklaring": "Koden går inte att bygga. Röda vågstreck, och felkoder som börjar med CS.",
+   "exempel": "",
+   "ord": "byggfel compile error",
+   "guide": "guider/sa-fungerar-csharp.md#tre-sorters-fel"
+  },
+  {
+   "namn": "Exception (körfel)",
+   "kategori": "Begrepp",
+   "forklaring": "Ett fel som uppstår när programmet körs, så att det kraschar.",
+   "exempel": "",
+   "ord": "krasch runtime fel",
+   "guide": "guider/sa-fungerar-csharp.md#tre-sorters-fel"
+  },
+  {
+   "namn": "PascalCase och camelCase",
+   "kategori": "Begrepp",
+   "forklaring": "Namnstandard. Klasser och metoder: PascalCase (SorteraLista). Variabler och parametrar: camelCase (antalElever).",
+   "exempel": "",
+   "ord": "namngivning namn kodstandard",
+   "guide": "guider/kodstandard.md#namn-ide1006"
+  },
+  {
+   "namn": "Semantisk versionering",
+   "kategori": "Begrepp",
+   "forklaring": "MAJOR.MINOR.PATCH. PATCH = buggfix, MINOR = ny funktion, MAJOR = bryter andras kod.",
+   "exempel": "",
+   "ord": "semver version",
+   "guide": "guider/versionering.md"
+  },
+  {
+   "namn": "CS1002: ; expected",
+   "kategori": "Felmeddelanden",
+   "forklaring": "Ett semikolon saknas i slutet av en sats.",
+   "exempel": "int x = 5     // ← här saknas ;",
+   "ord": "semikolon",
+   "guide": "guider/sa-fungerar-csharp.md#tre-sorters-fel"
+  },
+  {
+   "namn": "CS0103: The name 'X' does not exist",
+   "kategori": "Felmeddelanden",
+   "forklaring": "Kompilatorn hittar inte X. Stavfel, glömd using, eller variabeln finns inte där du använder den.",
+   "exempel": "",
+   "ord": "finns inte using stavfel",
+   "guide": "guider/skapa-projekt.md#vanliga-fel-och-vad-de-betyder"
+  },
+  {
+   "namn": "CS0246: Type or namespace could not be found",
+   "kategori": "Felmeddelanden",
+   "forklaring": "Projektet saknar referens till det andra projektet, eller så saknas using.",
+   "exempel": "",
+   "ord": "projectreference using saknas",
+   "guide": "guider/skapa-projekt.md#vanliga-fel-och-vad-de-betyder"
+  },
+  {
+   "namn": "CS0029: Cannot implicitly convert type",
+   "kategori": "Felmeddelanden",
+   "forklaring": "Fel typ, t.ex. text där det ska vara ett tal. Gör om typen eller ändra variabeln.",
+   "exempel": "int tal = \"5\";   // fel",
+   "ord": "typ konvertera",
+   "guide": "guider/metoder.md#vanliga-fel"
+  },
+  {
+   "namn": "CS0161: Not all code paths return a value",
+   "kategori": "Felmeddelanden",
+   "forklaring": "Det finns en väg genom metoden som inte slutar med return.",
+   "exempel": "",
+   "ord": "return saknas",
+   "guide": "guider/metoder.md#vanliga-fel"
+  },
+  {
+   "namn": "CS0165: Use of unassigned local variable",
+   "kategori": "Felmeddelanden",
+   "forklaring": "Variabeln används innan den har fått ett värde. Ge den ett startvärde.",
+   "exempel": "int summa = 0;   // ge ett startvärde",
+   "ord": "startvärde tilldelad",
+   "guide": ""
+  },
+  {
+   "namn": "CS5001: No static 'Main' method",
+   "kategori": "Felmeddelanden",
+   "forklaring": "Programmet saknar startpunkt.",
+   "exempel": "",
+   "ord": "main startpunkt",
+   "guide": "guider/skapa-projekt.md#vanliga-fel-och-vad-de-betyder"
+  },
+  {
+   "namn": "CS8802: Only one compilation unit can have top-level statements",
+   "kategori": "Felmeddelanden",
+   "forklaring": "Två filer har kod utanför en klass. Bara en fil får det.",
+   "exempel": "",
+   "ord": "top-level två filer",
+   "guide": "guider/skapa-projekt.md#vanliga-fel-och-vad-de-betyder"
+  },
+  {
+   "namn": "IndexOutOfRangeException",
+   "kategori": "Felmeddelanden",
+   "forklaring": "Du försöker läsa en plats som inte finns, t.ex. tal[tal.Length]. Sista index är Length - 1.",
+   "exempel": "",
+   "ord": "index utanför array",
+   "guide": "guider/sa-fungerar-csharp.md#2-körfel-programmet-kraschar"
+  },
+  {
+   "namn": "NullReferenceException",
+   "kategori": "Felmeddelanden",
+   "forklaring": "Du använder något som är null.",
+   "exempel": "",
+   "ord": "null",
+   "guide": "guider/sa-fungerar-csharp.md#2-körfel-programmet-kraschar"
+  },
+  {
+   "namn": "FormatException",
+   "kategori": "Felmeddelanden",
+   "forklaring": "int.Parse fick text som inte är ett tal. Använd int.TryParse.",
+   "exempel": "",
+   "ord": "parse text tal",
+   "guide": "guider/sa-fungerar-csharp.md#2-körfel-programmet-kraschar"
+  },
+  {
+   "namn": "DivideByZeroException",
+   "kategori": "Felmeddelanden",
+   "forklaring": "Du delade ett heltal med 0.",
+   "exempel": "",
+   "ord": "dela med noll",
+   "guide": "guider/sa-fungerar-csharp.md#2-körfel-programmet-kraschar"
+  },
+  {
+   "namn": "NotImplementedException",
+   "kategori": "Felmeddelanden",
+   "forklaring": "Metoden är inte skriven än. Byt ut throw-raden mot din kod.",
+   "exempel": "",
+   "ord": "inte påbörjad",
+   "guide": "guider/sa-fungerar-csharp.md#2-körfel-programmet-kraschar"
+  },
+  {
+   "namn": "Class library cannot be started directly",
+   "kategori": "Felmeddelanden",
+   "forklaring": "Du trycker ▶ på ett klassbibliotek. Välj ett Provkör-projekt som startprojekt.",
+   "exempel": "",
+   "ord": "startprojekt starta bibliotek",
+   "guide": "guider/filstruktur.md#körbart-program-eller-bibliotek"
+  },
+  {
+   "namn": "git status",
+   "kategori": "Git",
+   "forklaring": "Visar vad som har ändrats och vad som är nästa steg. Kör den ofta!",
+   "exempel": "git status",
+   "ord": "läge status",
+   "guide": "guider/git-och-github.md#git-status-är-din-bästa-vän"
+  },
+  {
+   "namn": "git add",
+   "kategori": "Git",
+   "forklaring": "Väljer vilka ändringar som ska med i nästa commit.",
+   "exempel": "git add .\ngit add Grunder.cs",
+   "ord": "lägg till staging",
+   "guide": "guider/git-och-github.md#commit-en-sparpunkt"
+  },
+  {
+   "namn": "git commit",
+   "kategori": "Git",
+   "forklaring": "Sparar en version med ett meddelande.",
+   "exempel": "git commit -m \"Löste uppgift 3\"",
+   "ord": "spara version",
+   "guide": "guider/git-och-github.md#commit-en-sparpunkt"
+  },
+  {
+   "namn": "git push",
+   "kategori": "Git",
+   "forklaring": "Skickar dina commits till GitHub (din fork).",
+   "exempel": "git push\ngit push --tags",
+   "ord": "skicka ladda upp",
+   "guide": "guider/git-och-github.md"
+  },
+  {
+   "namn": "git pull",
+   "kategori": "Git",
+   "forklaring": "Hämtar och slår ihop ändringar.",
+   "exempel": "git pull --no-rebase --no-edit upstream main",
+   "ord": "hämta",
+   "guide": "guider/git-och-github.md"
+  },
+  {
+   "namn": "git fetch",
+   "kategori": "Git",
+   "forklaring": "Kollar vad som finns på servern utan att ändra dina filer.",
+   "exempel": "git fetch upstream",
+   "ord": "kolla uppdateringar",
+   "guide": "guider/git-och-github.md"
+  },
+  {
+   "namn": "git log",
+   "kategori": "Git",
+   "forklaring": "Visar historiken.",
+   "exempel": "git log --oneline --graph --all",
+   "ord": "historik",
+   "guide": "guider/git-och-github.md"
+  },
+  {
+   "namn": "git diff",
+   "kategori": "Git",
+   "forklaring": "Visar exakt vilka rader som ändrats.",
+   "exempel": "git diff\ngit diff --staged",
+   "ord": "skillnad ändringar",
+   "guide": ""
+  },
+  {
+   "namn": "git restore",
+   "kategori": "Git",
+   "forklaring": "Ångrar ändringar i en fil, eller hämtar en fil från en gammal commit.",
+   "exempel": "git restore Grunder.cs\ngit restore --source a1b2c3d Grunder.cs",
+   "ord": "ångra återställ",
+   "guide": "guider/andra-historik.md"
+  },
+  {
+   "namn": "git merge",
+   "kategori": "Git",
+   "forklaring": "Slår ihop en annan gren med din.",
+   "exempel": "git merge kompis\ngit merge --abort",
+   "ord": "slå ihop",
+   "guide": "guider/merge-konflikter.md"
+  },
+  {
+   "namn": "Konfliktmarkeringar <<<<<<< ======= >>>>>>>",
+   "kategori": "Git",
+   "forklaring": "Visar en merge-konflikt i filen. Välj vad som ska vara kvar och ta bort markeringarna.",
+   "exempel": "<<<<<<< HEAD\ndin version\n=======\nden andra versionen\n>>>>>>> kompis",
+   "ord": "konflikt merge conflict",
+   "guide": "guider/merge-konflikter.md#konfliktmarkeringarna"
+  },
+  {
+   "namn": "git commit --amend",
+   "kategori": "Git",
+   "forklaring": "Ändrar den senaste commiten: meddelandet eller innehållet. Bara före push!",
+   "exempel": "git commit --amend -m \"Bättre meddelande\"\ngit commit --amend --no-edit",
+   "ord": "ändra senaste commit",
+   "guide": "guider/andra-historik.md"
+  },
+  {
+   "namn": "git revert",
+   "kategori": "Git",
+   "forklaring": "Skapar en ny commit som tar bort ändringarna från en gammal commit. Säkert även efter push.",
+   "exempel": "git revert a1b2c3d",
+   "ord": "ångra gammal commit",
+   "guide": "guider/andra-historik.md"
+  },
+  {
+   "namn": "git rebase -i",
+   "kategori": "Git",
+   "forklaring": "Skriv om historiken: byt meddelande (reword), slå ihop (fixup/squash), ta bort (drop), ändra (edit).",
+   "exempel": "git rebase -i HEAD~4",
+   "ord": "interaktiv rebase skriva om historik",
+   "guide": "guider/andra-historik.md"
+  },
+  {
+   "namn": "git cherry-pick",
+   "kategori": "Git",
+   "forklaring": "Kopierar en enskild commit från en annan gren till din.",
+   "exempel": "git cherry-pick a1b2c3d",
+   "ord": "plocka commit",
+   "guide": "guider/andra-historik.md"
+  },
+  {
+   "namn": "git bisect",
+   "kategori": "Git",
+   "forklaring": "Hittar vilken commit som införde en bugg genom att halvera historiken.",
+   "exempel": "git bisect start\ngit bisect bad\ngit bisect good a1b2c3d",
+   "ord": "hitta bugg binärsökning",
+   "guide": "guider/andra-historik.md"
+  },
+  {
+   "namn": "git reset",
+   "kategori": "Git",
+   "forklaring": "Flyttar grenen bakåt. --soft behåller ändringarna, --hard kastar dem. Bara före push!",
+   "exempel": "git reset --soft HEAD~1\ngit reset --hard HEAD~2",
+   "ord": "ångra commits",
+   "guide": "guider/andra-historik.md"
+  },
+  {
+   "namn": "git reflog",
+   "kategori": "Git",
+   "forklaring": "Visar allt HEAD har pekat på. Livlinan om du har tappat bort commits.",
+   "exempel": "git reflog",
+   "ord": "hitta förlorad commit",
+   "guide": "guider/andra-historik.md"
+  },
+  {
+   "namn": "git tag",
+   "kategori": "Git",
+   "forklaring": "Sätter en etikett, t.ex. en version, på en commit.",
+   "exempel": "git tag v1.0.1\ngit push --tags",
+   "ord": "version etikett",
+   "guide": "guider/versionering.md#git-taggar-märk-en-version-i-historiken"
+  },
+  {
+   "namn": "git remote",
+   "kategori": "Git",
+   "forklaring": "Visar och lägger till adresser till andra repon (origin, upstream).",
+   "exempel": "git remote -v\ngit remote add upstream <adress>",
+   "ord": "origin upstream",
+   "guide": "guider/git-och-github.md#remote-en-kopia-någon-annanstans"
+  },
+  {
+   "namn": "git blame",
+   "kategori": "Git",
+   "forklaring": "Visar vem som senast ändrade varje rad, och i vilken commit.",
+   "exempel": "git blame Betyg.cs",
+   "ord": "vem ändrade",
+   "guide": "guider/andra-historik.md"
+  },
+  {
+   "namn": "dotnet build",
+   "kategori": "dotnet",
+   "forklaring": "Bygger koden och visar fel.",
+   "exempel": "dotnet build",
+   "ord": "bygga kompilera",
+   "guide": ""
+  },
+  {
+   "namn": "dotnet run",
+   "kategori": "dotnet",
+   "forklaring": "Bygger och kör ett program.",
+   "exempel": "dotnet run --project 01-grunder/Grunder.Provkor",
+   "ord": "köra starta",
+   "guide": ""
+  },
+  {
+   "namn": "dotnet test",
+   "kategori": "dotnet",
+   "forklaring": "Kör testerna.",
+   "exempel": "dotnet test\ndotnet test --filter \"DisplayName~04 ·\"",
+   "ord": "testa tester",
+   "guide": ""
+  },
+  {
+   "namn": "dotnet new",
+   "kategori": "dotnet",
+   "forklaring": "Skapar ett nytt projekt eller en ny solution.",
+   "exempel": "dotnet new console -n MinApp\ndotnet new classlib -n MittBibliotek\ndotnet new sln -n MinApp",
+   "ord": "skapa projekt",
+   "guide": "guider/skapa-projekt.md"
+  },
+  {
+   "namn": "dotnet sln add",
+   "kategori": "dotnet",
+   "forklaring": "Lägger till ett projekt i en solution.",
+   "exempel": "dotnet sln MinApp.slnx add MinApp\\MinApp.csproj",
+   "ord": "solution lägg till",
+   "guide": "guider/skapa-projekt.md"
+  },
+  {
+   "namn": "dotnet add reference",
+   "kategori": "dotnet",
+   "forklaring": "Lägger till en ProjectReference.",
+   "exempel": "dotnet add MinApp\\MinApp.csproj reference MittBibliotek\\MittBibliotek.csproj",
+   "ord": "referens",
+   "guide": "guider/skapa-projekt.md"
+  },
+  {
+   "namn": "dotnet format",
+   "kategori": "dotnet",
+   "forklaring": "Rättar formatering och kodstil automatiskt.",
+   "exempel": "dotnet format 01-grunder/Grunder",
+   "ord": "formatera kodstil",
+   "guide": "guider/kodstandard.md#fixa-automatiskt"
+  },
+  {
+   "namn": "Ctrl+Shift+B",
+   "kategori": "Visual Studio",
+   "forklaring": "Bygg solutionen.",
+   "exempel": "",
+   "ord": "bygga kortkommando",
+   "guide": "guider/visual-studio-och-vscode.md"
+  },
+  {
+   "namn": "F5 / Ctrl+F5",
+   "kategori": "Visual Studio",
+   "forklaring": "Kör med debugger / utan debugger.",
+   "exempel": "",
+   "ord": "köra starta kortkommando",
+   "guide": "guider/visual-studio-och-vscode.md"
+  },
+  {
+   "namn": "F9 / F10 / F11",
+   "kategori": "Visual Studio",
+   "forklaring": "Brytpunkt / nästa rad / gå in i metoden.",
+   "exempel": "",
+   "ord": "debugga brytpunkt stega",
+   "guide": "guider/testkora.md#3-debuggern-stega-igenom-koden"
+  },
+  {
+   "namn": "Ctrl+K, Ctrl+D",
+   "kategori": "Visual Studio",
+   "forklaring": "Formatera filen. (VS Code: Shift+Alt+F)",
+   "exempel": "",
+   "ord": "formatera indrag",
+   "guide": "guider/kodstandard.md"
+  },
+  {
+   "namn": "Ctrl+.",
+   "kategori": "Visual Studio",
+   "forklaring": "Snabbfix, glödlampan: förslag på hur ett fel kan rättas.",
+   "exempel": "",
+   "ord": "snabbfix glödlampa quick fix",
+   "guide": "guider/visual-studio-och-vscode.md"
+  },
+  {
+   "namn": "Ctrl+R, A",
+   "kategori": "Visual Studio",
+   "forklaring": "Kör alla tester.",
+   "exempel": "",
+   "ord": "testa",
+   "guide": "guider/visual-studio-och-vscode.md"
+  },
+  {
+   "namn": "F12",
+   "kategori": "Visual Studio",
+   "forklaring": "Gå till definitionen av en metod eller klass.",
+   "exempel": "",
+   "ord": "gå till definition",
+   "guide": "guider/visual-studio-och-vscode.md"
+  },
+  {
+   "namn": "Ctrl+K, Ctrl+C / Ctrl+K, Ctrl+U",
+   "kategori": "Visual Studio",
+   "forklaring": "Kommentera bort / ta bort kommentar på markerade rader.",
+   "exempel": "",
+   "ord": "kommentera",
+   "guide": "guider/visual-studio-och-vscode.md"
+  },
+  {
+   "namn": "cw + Tab Tab",
+   "kategori": "Visual Studio",
+   "forklaring": "Kodsnutt som skriver Console.WriteLine();",
+   "exempel": "",
+   "ord": "snippet kodsnutt",
+   "guide": "guider/visual-studio-och-vscode.md"
+  },
+  {
+   "namn": "Set as Startup Project",
+   "kategori": "Visual Studio",
+   "forklaring": "Högerklicka på ett projekt för att välja vad ▶ ska köra.",
+   "exempel": "",
+   "ord": "startprojekt",
+   "guide": "guider/visual-studio-och-vscode.md"
+  }
+ ]
+}

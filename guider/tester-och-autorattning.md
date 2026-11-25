@@ -71,8 +71,7 @@ nästan alltid gröna på GitHub också.
         ├── 2. Installerar .NET
         ├── 3. Bygger allt och kör alla tester
         ├── 4. Gör en tabell med resultatet
-        ├── 5. Granskar kodstilen och ger tips
-        └── 6. Uppdaterar din dashboard
+        └── 5. Granskar kodstilen och ger tips
         │
         ▼
   ✅ eller ❌ visas vid din commit
@@ -102,21 +101,31 @@ någonstans. Då kan inga tester köras alls. Bygg i Visual Studio och kolla
 
 ---
 
-## Din dashboard
+## Din dashboard (på din egen dator)
 
-Efter varje push bygger GitHub Actions en personlig sida åt dig:
-**Min progression**. Den ligger på en egen gren som heter `dashboard` i din
-fork. Länken finns överst i README-filen.
+Du kan se hur långt du har kommit utan att pusha och utan internet.
+Dubbelklicka på **`dashboard.cmd`** i repomappen, eller kör:
 
-Där ser du:
+```powershell
+dotnet run --project verktyg/Dashboard
+```
+
+Verktyget bygger all din kod, kör alla tester och öppnar sidan
+`min-dashboard/index.html` i webbläsaren. Där finns:
+
 - **Förloppsstaplar** för varje övning, och totalt
 - **Nästa steg**: det första testet som inte är grönt än, med en förklaring
-- **Utveckling**: hur många tester du hade godkända vid de senaste pusharna
-- **Kodstil**: hur många tips du fick
+- **Utveckling**: en graf över hur många tester du hade gröna varje gång du körde dashboarden
+- **Kodtips**: samma tips som i GitHub Actions
 - **Alla tester**, övning för övning
+- **Uppslagsbok**: sök efter C#-ord, metoder, felmeddelanden, git- och dotnet-kommandon (tryck **/** för att söka)
 
-Grenen `dashboard` skrivs bara av GitHub Actions. Du behöver aldrig hämta
-den eller ändra i den, och den kan aldrig ge konflikter med din kod.
+Mappen `min-dashboard` finns bara på din dator. Den laddas inte upp till
+GitHub. Vill du bara visa senaste resultatet utan att köra testerna igen:
+`dotnet run --project verktyg/Dashboard -- --utan-test`
+
+Uppslagsboken finns också som en egen fil: öppna **`uppslagsbok.html`** i
+repomappen.
 
 ---
 
@@ -124,7 +133,7 @@ den eller ändra i den, och den kan aldrig ge konflikter med din kod.
 
 Samtidigt som testerna körs granskas din kod mot kursens
 [kodstandard](kodstandard.md). Tipsen syns i sammanfattningen under
-**💡 Tips om kodstil**, som små notiser i koden på GitHub, och på din
+**💡 Tips om kodstil**, som små notiser i koden på GitHub, och på din lokala
 dashboard. **Tipsen påverkar aldrig rättningen.**
 
 ---

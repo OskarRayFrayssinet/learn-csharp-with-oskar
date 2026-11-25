@@ -5,9 +5,10 @@ och får direkt veta vilka tester som är godkända.
 
 ## Börja här
 
-> 📊 **Din dashboard:** [Min progression](../../tree/dashboard). Den uppdateras varje gång du pushar
-> och visar hur långt du har kommit, vad du ska göra härnäst och tips om din kod.
-> (Länken fungerar i din fork när du har pushat minst en gång.)
+> 📊 **Din dashboard:** dubbelklicka på **`dashboard.cmd`** i repomappen (eller kör
+> `dotnet run --project verktyg/Dashboard`). Den bygger och testar din kod och öppnar en
+> sida som visar hur långt du har kommit, vad du ska göra härnäst, tips om din kod och en
+> **uppslagsbok** med sökfunktion. Allt finns på din dator och fungerar utan internet.
 
 1. **Läs [Så jobbar du i kursen](guider/sa-jobbar-du.md).** Den förklarar
    hur allt hänger ihop och vad du gör varje lektion.
@@ -17,10 +18,65 @@ och får direkt veta vilka tester som är godkända.
 Så här ser varje lektion ut:
 
 ```
- Hämta nytt  →  Läs  →  Skriv kod  →  Provkör  →  Testa  →  Commit  →  Push  →  Kolla dashboard
- från läraren   uppgift              (▶)        (Test     (spara)    (skicka)   (rättning
-                + guide                          Explorer)                       och tips)
+ Hämta nytt  →  Läs  →  Skriv kod  →  Provkör  →  Testa  →  Dashboard  →  Commit  →  Push
+ från läraren   uppgift              (▶)        (Test     (framsteg     (spara)    (skicka,
+                + guide                          Explorer)  och tips)               rättning)
 ```
+
+## Användbara kommandon
+
+Kör kommandona i PowerShell i repots rotmapp
+(`cd C:\github-repos\learn-csharp-with-oskar`). Behöver du slå upp
+något annat, använd **[Uppslagsboken](uppslagsbok.html)**.
+
+### Varje lektion
+```powershell
+git fetch upstream                              # finns det något nytt från läraren?
+git log --oneline HEAD..upstream/main           # vad är nytt? (tomt = inget)
+git pull --no-rebase --no-edit upstream main    # hämta det nya
+start learn-csharp-with-oskar.sln               # öppna i Visual Studio  (VS Code: code .)
+git add .                                       # välj alla ändringar
+git commit -m "Löste uppgift 3"                 # spara en version
+git push                                        # skicka till din fork, rättningen startar
+.\dashboard.cmd                                 # visa din progression (fungerar offline)
+```
+
+### Git
+| Kommando | Gör |
+|---|---|
+| `git status` | Vad har ändrats? Vad är nästa steg? **Kör den ofta.** |
+| `git log --oneline --graph` | Visa historiken |
+| `git diff` | Visa exakt vilka rader du har ändrat |
+| `git restore <fil>` | Ångra ändringar i en fil som inte är committade |
+| `git commit --amend --no-edit` | Lägg till glömda ändringar i senaste commit (före push) |
+| `git merge --abort` | Avbryt en merge med konflikter |
+| `git remote -v` | Visa vart `origin` och `upstream` pekar |
+
+### .NET
+| Kommando | Gör |
+|---|---|
+| `dotnet build` | Bygg allt och visa fel |
+| `dotnet test` | Kör alla tester |
+| `dotnet test --filter "DisplayName~01 ·"` | Kör bara testerna för övning 01 |
+| `dotnet run --project 04-traning/Traning.Provkor` | Kör ett Provkör-program |
+| `dotnet format 01-grunder/Grunder` | Rätta formatering och kodstil automatiskt |
+
+### Labbarna
+| Kommando | Gör |
+|---|---|
+| `dotnet run --project 05-konflikter/Konfliktlabb` | Öva på merge-konflikter (meny) |
+| `dotnet run --project 07-historik/Historiklabb` | Öva på att rätta gammal historik (meny) |
+| `.\kontrollera.cmd` | Kontrollera ditt scenario (i scenariots mapp) |
+
+### Visual Studio
+| Tangent | Gör |
+|---|---|
+| **Ctrl+Shift+B** | Bygg |
+| **F5** / **Ctrl+F5** | Kör med / utan debugger |
+| **Ctrl+R, A** | Kör alla tester |
+| **F9** | Brytpunkt |
+| **Ctrl+K, Ctrl+D** | Formatera filen |
+| **Ctrl+.** | Snabbfix (glödlampan) |
 
 ## Övningar
 
@@ -32,6 +88,7 @@ Så här ser varje lektion ut:
 | 04 | [Träning – 40 små uppgifter](04-traning) | [Variabler](guider/variabler-och-datatyper.md), [Villkor och loopar](guider/villkor-och-loopar.md) |
 | 05 | [Merge-konflikter](05-konflikter) | [Merge-konflikter](guider/merge-konflikter.md), [Git och GitHub](guider/git-och-github.md) |
 | 06 | [Versionering](06-versionering) | [Versionering](guider/versionering.md) |
+| 07 | [Rätta gammal historik](07-historik) | [Ändra och ångra historik](guider/andra-historik.md) |
 
 ## Guider
 
@@ -53,6 +110,7 @@ Alla guider finns i **[guider/](guider/README.md)**. Läs de fem första innan d
 | [Kodstandard och automatiska tips](guider/kodstandard.md) | Namn, klamrar, formatering och tipsen du får |
 | [Merge-konflikter](guider/merge-konflikter.md) | Varför konflikter uppstår och hur du löser dem |
 | [Versionering](guider/versionering.md) | MAJOR.MINOR.PATCH, ändringslogg och taggar |
+| [Ändra och ångra historik](guider/andra-historik.md) | amend, revert, rebase -i, cherry-pick, bisect, reflog |
 
 ---
 

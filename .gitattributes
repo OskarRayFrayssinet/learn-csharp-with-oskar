@@ -1,0 +1,4 @@
+# .cmd-filer måste ha Windows-radbrytningar
+*.cmd text eol=crlf
+# Skalskript måste ha Unix-radbrytningar
+*.sh text eol=lf
